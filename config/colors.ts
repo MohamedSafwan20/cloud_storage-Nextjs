@@ -52,6 +52,7 @@ const customColors = {
   success: "#16d090",
   error: "#ff6760",
   disabled: "#f6f8fb",
+  disabledVariant: "#b6b6b6",
   primaryVariant: "#7d6bda",
 };
 

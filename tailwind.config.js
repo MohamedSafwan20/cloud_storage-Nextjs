@@ -10,6 +10,7 @@ module.exports = {
       primaryVariant: "#7d6bda",
       warning: "#f6be64",
       disabled: "#f6f8fb",
+      disabledVariant: "#b6b6b6",
       error: "#ff6760",
       success: "#16d090",
     },
