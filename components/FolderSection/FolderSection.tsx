@@ -7,9 +7,9 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { AiFillFolder } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";
+import { BsFillFolderFill } from "react-icons/bs";
 import customColors from "../../config/colors";
 
 const FolderSection: NextPage = () => {
@@ -24,7 +24,7 @@ const FolderSection: NextPage = () => {
       <div className="mt-4 flex items-center justify-center flex-wrap">
         <div className="card w-1/4 cursor-pointer flex flex-col justify-center p-3 m-4">
           <div className="flex justify-between w-full">
-            <AiFillFolder size={60} color={customColors.primary} />
+            <BsFillFolderFill size={46} color={customColors.primary} />
             <Menu>
               <MenuButton
                 border="none"
@@ -52,7 +52,7 @@ const FolderSection: NextPage = () => {
         </div>
         <div className="card w-1/4 cursor-pointer flex flex-col justify-center p-3 m-4">
           <div className="flex justify-between w-full">
-            <AiFillFolder size={60} color={customColors.primary} />
+            <BsFillFolderFill size={46} color={customColors.primary} />
             <Menu>
               <MenuButton
                 border="none"
@@ -80,7 +80,7 @@ const FolderSection: NextPage = () => {
         </div>
         <div className="card w-1/4 cursor-pointer flex flex-col justify-center p-3 m-4">
           <div className="flex justify-between w-full">
-            <AiFillFolder size={60} color={customColors.primary} />
+            <BsFillFolderFill size={46} color={customColors.primary} />
             <Menu>
               <MenuButton
                 border="none"
@@ -108,7 +108,7 @@ const FolderSection: NextPage = () => {
         </div>
         <div className="card w-1/4 cursor-pointer flex flex-col justify-center p-3 m-4">
           <div className="flex justify-between w-full">
-            <AiFillFolder size={60} color={customColors.primary} />
+            <BsFillFolderFill size={46} color={customColors.primary} />
             <Menu>
               <MenuButton
                 border="none"

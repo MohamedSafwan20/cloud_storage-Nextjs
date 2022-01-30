@@ -4,6 +4,7 @@ import Root from "../components/Root";
 import { FiSearch } from "react-icons/fi";
 import customColors from "../config/colors";
 import FolderSection from "../components/FolderSection/FolderSection";
+import FilesSection from "../components/FilesSection/FilesSection";
 
 const HomePage: NextPage = () => {
   return (
@@ -20,6 +21,7 @@ const HomePage: NextPage = () => {
               </InputGroup>
             </div>
             <FolderSection />
+            <FilesSection />
           </div>
         </div>
         <div className="w-[30%] bg-error">sdf</div>
