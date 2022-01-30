@@ -1,3 +1,11 @@
+/* Tailwind styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom colors */
+@import "./colors.css";
+
 html,
 body {
   padding: 0;
