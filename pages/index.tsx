@@ -1,16 +1,13 @@
-import { Badge, Button } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import Root from "../components/Root";
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
-    <div>
-      <Button colorScheme="primaryScheme">Button</Button>
-      <Badge bgColor="warning">Default</Badge>
-      <h1 className="text-center my-24 text-error tracking-tight text-6xl">
-        Our homepage
-      </h1>
-    </div>
+    <Root>
+      <h1 className="ml-[5vw] text-[20em]">df</h1>
+      <h1 className="ml-[5vw] text-[20em]">df</h1>
+    </Root>
   );
 };
 
-export default Home;
+export default HomePage;
