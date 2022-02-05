@@ -1,0 +1,3 @@
+const TOTAL_STORAGE_CAPACITY = "40";
+
+export { TOTAL_STORAGE_CAPACITY };

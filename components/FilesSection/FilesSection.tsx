@@ -1,5 +1,10 @@
 import {
   Button,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Table,
   TableCaption,
   Tbody,
@@ -10,6 +15,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { MdOutlineDelete } from "react-icons/md";
 import { VscFilePdf } from "react-icons/vsc";
 import customColors from "../../config/colors";
 
@@ -42,7 +49,28 @@ const FilesSection: NextPage = () => {
                 </div>
               </Td>
               <Td className="text-md text-[#949bc1]">PDF</Td>
-              <Td className="text-md text-[#949bc1]">2022-Jan-30</Td>
+              <Td>
+                <div className="flex justify-between items-center">
+                  <p className="text-md text-[#949bc1]">2022-Jan-30</p>
+                  <Menu>
+                    <MenuButton
+                      border="none"
+                      as={IconButton}
+                      aria-label="Options"
+                      icon={
+                        <BiDotsHorizontalRounded
+                          size={24}
+                          color={customColors.disabledVariant}
+                        />
+                      }
+                      variant="outline"
+                    />
+                    <MenuList>
+                      <MenuItem icon={<MdOutlineDelete />}>Delete</MenuItem>
+                    </MenuList>
+                  </Menu>
+                </div>
+              </Td>
             </Tr>
             <Tr>
               <Td py="5">
@@ -52,7 +80,28 @@ const FilesSection: NextPage = () => {
                 </div>
               </Td>
               <Td className="text-md text-[#949bc1]">PDF</Td>
-              <Td className="text-md text-[#949bc1]">2022-Jan-30</Td>
+              <Td>
+                <div className="flex justify-between items-center">
+                  <p className="text-md text-[#949bc1]">2022-Jan-30</p>
+                  <Menu>
+                    <MenuButton
+                      border="none"
+                      as={IconButton}
+                      aria-label="Options"
+                      icon={
+                        <BiDotsHorizontalRounded
+                          size={24}
+                          color={customColors.disabledVariant}
+                        />
+                      }
+                      variant="outline"
+                    />
+                    <MenuList>
+                      <MenuItem icon={<MdOutlineDelete />}>Delete</MenuItem>
+                    </MenuList>
+                  </Menu>
+                </div>
+              </Td>
             </Tr>
             <Tr>
               <Td py="5">
@@ -62,7 +111,28 @@ const FilesSection: NextPage = () => {
                 </div>
               </Td>
               <Td className="text-md text-[#949bc1]">PDF</Td>
-              <Td className="text-md text-[#949bc1]">2022-Jan-30</Td>
+              <Td>
+                <div className="flex justify-between items-center">
+                  <p className="text-md text-[#949bc1]">2022-Jan-30</p>
+                  <Menu>
+                    <MenuButton
+                      border="none"
+                      as={IconButton}
+                      aria-label="Options"
+                      icon={
+                        <BiDotsHorizontalRounded
+                          size={24}
+                          color={customColors.disabledVariant}
+                        />
+                      }
+                      variant="outline"
+                    />
+                    <MenuList>
+                      <MenuItem icon={<MdOutlineDelete />}>Delete</MenuItem>
+                    </MenuList>
+                  </Menu>
+                </div>
+              </Td>
             </Tr>
           </Tbody>
         </Table>

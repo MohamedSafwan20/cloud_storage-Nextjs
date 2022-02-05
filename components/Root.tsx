@@ -10,7 +10,7 @@ const Root: NextPage = ({ children }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <SideNavbar />
-      <main>{children}</main>
+      <main className="ml-[72px]">{children}</main>
     </>
   );
 };

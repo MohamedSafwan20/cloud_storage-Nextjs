@@ -3,9 +3,6 @@
 @tailwind utilities;
 @import "./custom_components.css";
 
-/* Custom colors */
-@import "./colors.css";
-
 /* Font */
 @import url("https://fonts.googleapis.com/css2?family=Inter");
 
@@ -19,4 +16,8 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+.home_progress svg {
+  margin: 0 auto;
 }
