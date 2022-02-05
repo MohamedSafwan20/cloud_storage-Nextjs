@@ -10,17 +10,23 @@ import { useRouter } from "next/router";
 import { AiOutlineFilePdf } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { FaHeartBroken } from "react-icons/fa";
-import { MdDelete, MdOutlineFavorite } from "react-icons/md";
+import {
+  MdDelete,
+  MdOutlineFavorite,
+  MdSettingsBackupRestore,
+} from "react-icons/md";
 import customColors from "../../config/colors";
 
 interface FileCardProps {
   className?: string;
   isFavorite?: boolean;
+  isDeleted?: boolean;
 }
 
 const FileCard: NextPage<FileCardProps> = ({
   className,
   isFavorite = false,
+  isDeleted = false,
 }: FileCardProps) => {
   const router = useRouter();
 
@@ -62,6 +68,47 @@ const FileCard: NextPage<FileCardProps> = ({
                 }}
               >
                 Remove from favorites
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : isDeleted ? (
+          <Menu>
+            <MenuButton
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              border="none"
+              as={IconButton}
+              aria-label="Options"
+              icon={
+                <BiDotsHorizontalRounded
+                  size={24}
+                  color={customColors.disabledVariant}
+                />
+              }
+              variant="outline"
+            />
+            <MenuList>
+              <MenuItem
+                icon={
+                  <MdSettingsBackupRestore
+                    color={customColors.error}
+                    size={20}
+                  />
+                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                Restore
+              </MenuItem>
+              <MenuItem
+                icon={<MdDelete color={customColors.error} size={20} />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                Permanently delete
               </MenuItem>
             </MenuList>
           </Menu>
