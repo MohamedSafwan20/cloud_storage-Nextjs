@@ -15,14 +15,19 @@ const SideNavbar: NextPage = () => {
   return (
     <nav className="flex justify-between items-center flex-col max-w-[72px] h-screen bg-primary fixed">
       <div className="flex justify-center items-center flex-col">
-        <div className="mb-6 py-3 px-4">
-          <Image src={logo} alt="logo" />
-        </div>
+        <Link href="/">
+          <a className="mb-6 py-3 px-4">
+            <Image src={logo} alt="logo" />
+          </a>
+        </Link>
         <div className="w-full">
           <Link href="/">
             <a
               className={
-                router.pathname === "/" || router.pathname.includes("/folder")
+                router.pathname === "/" ||
+                router.pathname.includes("/folder") ||
+                router.pathname.includes("/all_folders") ||
+                router.pathname.includes("/all_files")
                   ? "flex justify-center items-center py-5 cursor-pointer bg-opacity-10 bg-disabled relative after:container after:absolute after:left-0 after:w-1 after:h-full after:bg-disabled"
                   : "transition-all duration-300 flex justify-center items-center py-5 cursor-pointer hover:bg-opacity-10 hover:bg-disabled relative hover:after:container hover:after:absolute hover:after:left-0 hover:after:w-1 hover:after:h-full hover:after:bg-disabled"
               }
@@ -30,15 +35,17 @@ const SideNavbar: NextPage = () => {
               <VscFiles size={20} color="white" />
             </a>
           </Link>
-          <div
-            className={
-              router.pathname === "/favorite"
-                ? "flex justify-center items-center py-5 cursor-pointer bg-opacity-10 bg-disabled relative after:container after:absolute after:left-0 after:w-1 after:h-full after:bg-disabled"
-                : "transition-all duration-300 flex justify-center items-center py-5 cursor-pointer hover:bg-opacity-10 hover:bg-disabled relative hover:after:container hover:after:absolute hover:after:left-0 hover:after:w-1 hover:after:h-full hover:after:bg-disabled"
-            }
-          >
-            <AiOutlineHeart size={20} color="white" />
-          </div>
+          <Link href="/favorites">
+            <a
+              className={
+                router.pathname === "/favorites"
+                  ? "flex justify-center items-center py-5 cursor-pointer bg-opacity-10 bg-disabled relative after:container after:absolute after:left-0 after:w-1 after:h-full after:bg-disabled"
+                  : "transition-all duration-300 flex justify-center items-center py-5 cursor-pointer hover:bg-opacity-10 hover:bg-disabled relative hover:after:container hover:after:absolute hover:after:left-0 hover:after:w-1 hover:after:h-full hover:after:bg-disabled"
+              }
+            >
+              <AiOutlineHeart size={20} color="white" />
+            </a>
+          </Link>
           <div
             className={
               router.pathname === "/bin"

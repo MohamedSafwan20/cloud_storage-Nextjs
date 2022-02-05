@@ -3,7 +3,8 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { BiChevronRight } from "react-icons/bi";
-import { VscHome } from "react-icons/vsc";
+import FileCard from "../../components/FileCard/FileCard";
+import FolderCard from "../../components/FolderCard/FolderCard";
 import Root from "../../components/Root";
 
 const Folder: NextPage = () => {
@@ -26,7 +27,14 @@ const Folder: NextPage = () => {
             </BreadcrumbItem>
           </Breadcrumb>
         </div>
-        <div>{/* <h1>Folder</h1> */}</div>
+        <div className="mt-[3rem] flex items-center flex-wrap">
+          <FolderCard className="w-1/6 h-[130px]" />
+          <FolderCard className="w-1/6 h-[130px]" />
+          <FolderCard className="w-1/6 h-[130px]" />
+          <FolderCard className="w-1/6 h-[130px]" />
+          <FileCard className="w-1/6 h-[130px]" />
+          <FileCard className="w-1/6 h-[130px]" />
+        </div>
       </div>
     </Root>
   );

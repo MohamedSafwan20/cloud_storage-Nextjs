@@ -15,17 +15,24 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";
 import { VscFilePdf } from "react-icons/vsc";
 import customColors from "../../config/colors";
 
 const FilesSection: NextPage = () => {
+  const router = useRouter();
+
   return (
     <div className="mt-12 mb-8">
       <div className="flex justify-between items-center">
         <h1 className="h3">Files</h1>
-        <Button colorScheme="primaryScheme" variant="link">
+        <Button
+          colorScheme="primaryScheme"
+          variant="link"
+          onClick={() => router.push("/all_files")}
+        >
           View all
         </Button>
       </div>
