@@ -26,8 +26,8 @@ const SideNavbar: NextPage = () => {
               className={
                 router.pathname === "/" ||
                 router.pathname.includes("/folder") ||
-                router.pathname.includes("/all_folders") ||
-                router.pathname.includes("/all_files")
+                router.pathname.includes("/all-folders") ||
+                router.pathname.includes("/all-files")
                   ? "flex justify-center items-center py-5 cursor-pointer bg-opacity-10 bg-disabled relative after:container after:absolute after:left-0 after:w-1 after:h-full after:bg-disabled"
                   : "transition-all duration-300 flex justify-center items-center py-5 cursor-pointer hover:bg-opacity-10 hover:bg-disabled relative hover:after:container hover:after:absolute hover:after:left-0 hover:after:w-1 hover:after:h-full hover:after:bg-disabled"
               }
@@ -46,10 +46,10 @@ const SideNavbar: NextPage = () => {
               <AiOutlineHeart size={20} color="white" />
             </a>
           </Link>
-          <Link href="/recycle_bin">
+          <Link href="/recycle-bin">
             <a
               className={
-                router.pathname.includes("/recycle_bin")
+                router.pathname.includes("/recycle-bin")
                   ? "flex justify-center items-center py-5 cursor-pointer bg-opacity-10 bg-disabled relative after:container after:absolute after:left-0 after:w-1 after:h-full after:bg-disabled"
                   : "transition-all duration-300 flex justify-center items-center py-5 cursor-pointer hover:bg-opacity-10 hover:bg-disabled relative hover:after:container hover:after:absolute hover:after:left-0 hover:after:w-1 hover:after:h-full hover:after:bg-disabled"
               }

@@ -31,7 +31,7 @@ const FilesSection: NextPage = () => {
         <Button
           colorScheme="primaryScheme"
           variant="link"
-          onClick={() => router.push("/all_files")}
+          onClick={() => router.push("/all-files")}
         >
           View all
         </Button>

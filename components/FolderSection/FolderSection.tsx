@@ -14,7 +14,7 @@ const FolderSection: NextPage = () => {
         <Button
           colorScheme="primaryScheme"
           variant="link"
-          onClick={() => router.push("/all_folders")}
+          onClick={() => router.push("/all-folders")}
         >
           View all
         </Button>
