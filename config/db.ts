@@ -1,14 +1,16 @@
-import { connect } from "mongoose";
-
-let alreadyConnected: number | null = null;
+import mongoose from "mongoose";
 
 async function connectToDb() {
-  if (alreadyConnected) return;
+  if (mongoose.connection?.readyState >= 1) {
+    return;
+  }
 
-  const conn = await connect(process.env.MONGODB_URI!!);
-
-  alreadyConnected = conn.connections[0].readyState;
-  console.log(alreadyConnected);
+  return mongoose.connect(process.env.MONGO_URI!!, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  });
 }
 
 export default connectToDb;
