@@ -2,38 +2,42 @@ import bcrypt from "bcrypt";
 import type { NextApiRequest, NextApiResponse } from "next";
 import withDbConnection from "../../backend/middlewares/main";
 import User from "../../backend/models/User";
+import { generateJwt } from "../../utils/utils";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const data = JSON.parse(req.body);
 
   try {
-    const user = await User.create({
+    const user = await User.findOne({
       email: data.email,
-      password: bcrypt.hashSync(data.password, 10),
     });
 
-    if (user.id) {
-      res.status(201).json({
+    if (user === null) {
+      res.status(200).json({
+        status: 0,
+        message: "User not found!",
+      });
+      return;
+    }
+
+    if (bcrypt.compareSync(data.password, user.password)) {
+      const token = generateJwt(user._id);
+
+      res.status(200).json({
         status: 1,
+        auth_token: token,
       });
     } else {
       res.status(200).json({
         status: 0,
-        message: "Something went wrong",
+        message: "Password is incorrect!",
       });
     }
   } catch (err: any) {
-    if (err.code === 11000) {
-      res.status(200).json({
-        status: 0,
-        message: "Email already exists",
-      });
-    } else {
-      res.status(500).json({
-        status: 0,
-        message: "Server Error",
-      });
-    }
+    res.status(500).json({
+      status: 0,
+      message: "Server Error",
+    });
   }
 }
 

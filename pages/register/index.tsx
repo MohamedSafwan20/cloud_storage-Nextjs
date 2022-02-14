@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useRef, useState } from "react";
 import { CgPassword } from "react-icons/cg";
@@ -20,6 +21,7 @@ import {
   MdOutlineMailOutline,
 } from "react-icons/md";
 import img from "../../assets/images/login-signup.svg";
+import Routes from "../../config/routes";
 
 const Register: NextPage = () => {
   const router = useRouter();
@@ -76,6 +78,14 @@ const Register: NextPage = () => {
     const data = await response.json();
 
     if (data.status) {
+      toast({
+        title: "Account created.",
+        description: "We've created your account for you.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+
       router.replace("/");
     } else {
       setError(data.message);
@@ -168,7 +178,9 @@ const Register: NextPage = () => {
             <div className="my-10 ml-2">
               <p className="text-sm font-semibold">
                 Already have an account?&nbsp;{" "}
-                <span className="text-primary">Sign in</span>
+                <Link href={Routes.Login}>
+                  <a className="text-primary">Sign in</a>
+                </Link>
               </p>
             </div>
           </form>
