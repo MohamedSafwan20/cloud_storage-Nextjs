@@ -35,7 +35,8 @@ const FolderCard: NextPage<FolderCardProps> = ({
   return (
     <div
       className={
-        "card cursor-pointer flex flex-col justify-center p-3 m-4 " + className
+        "card cursor-pointer flex flex-col justify-center p-3 m-4 folder " +
+        className
       }
       onClick={() => {
         router.push("/folder/23");
@@ -160,6 +161,13 @@ const FolderCard: NextPage<FolderCardProps> = ({
           1 folders, 123 files
         </p>
       </div>
+      <style jsx>{`
+        @media screen and (max-width: 570px) {
+          .folder {
+            width: 80%;
+          }
+        }
+      `}</style>
     </div>
   );
 };

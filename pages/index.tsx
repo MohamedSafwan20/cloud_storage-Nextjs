@@ -38,8 +38,8 @@ const HomePage: NextPage<Props> = (props) => {
 
   return (
     <Root>
-      <div className="flex">
-        <div className="w-[70%] bg-disabled p-4 py-8">
+      <div className="lg:flex md:block">
+        <div className="lg:w-[70%] bg-disabled p-4 py-8 md:w-[100%] md:mx-auto">
           <div className="w-[90%] mx-auto mt-4">
             <div className="w-[80%] mx-auto">
               <InputGroup bgColor="white" boxShadow="sm">
@@ -53,7 +53,7 @@ const HomePage: NextPage<Props> = (props) => {
             <FilesSection />
           </div>
         </div>
-        <div className="w-[30%] flex justify-between flex-col">
+        <div className="lg:w-[30%] flex justify-between lg:flex-col md:items-center md:w[100%]">
           <StorageProgressBar />
           <StorageUpgradeSection />
         </div>

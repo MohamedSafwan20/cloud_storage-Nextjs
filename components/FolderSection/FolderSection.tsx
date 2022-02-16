@@ -20,10 +20,10 @@ const FolderSection: NextPage = () => {
         </Button>
       </div>
       <div className="mt-4 flex items-center justify-center flex-wrap">
-        <FolderCard className="w-1/4" />
-        <FolderCard className="w-1/4" />
-        <FolderCard className="w-1/4" />
-        <FolderCard className="w-1/4" />
+        <FolderCard className="md:w-1/4 w-1/3" />
+        <FolderCard className="md:w-1/4 w-1/3" />
+        <FolderCard className="md:w-1/4 w-1/3" />
+        <FolderCard className="md:w-1/4 w-1/3" />
       </div>
     </div>
   );
