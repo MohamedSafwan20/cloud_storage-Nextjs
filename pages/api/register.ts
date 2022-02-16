@@ -2,15 +2,14 @@ import bcrypt from "bcrypt";
 import type { NextApiRequest, NextApiResponse } from "next";
 import withDbConnection from "../../backend/middlewares/main";
 import User from "../../backend/models/User";
+import AuthService from "../../services/authService";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const data = JSON.parse(req.body);
+  const auth = new AuthService();
 
   try {
-    const user = await User.create({
-      email: data.email,
-      password: bcrypt.hashSync(data.password, 10),
-    });
+    const user = await auth.register(data.email, data.password);
 
     if (user.id) {
       res.status(201).json({

@@ -7,6 +7,7 @@ import {
   InputLeftElement,
   useToast,
 } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -63,6 +64,8 @@ const Login: NextPage = () => {
     const data = await response.json();
 
     if (data.status) {
+      Cookies.set("auth_token", data.auth_token, { path: "/" });
+
       toast({
         title: "Login Success",
         status: "success",
