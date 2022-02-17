@@ -51,6 +51,7 @@ const Login: NextPage = () => {
     toastRef.current = toast({
       title: "Loading..",
       status: "info",
+      duration: null,
     }) as string;
 
     const response = await fetch("/api/login", {

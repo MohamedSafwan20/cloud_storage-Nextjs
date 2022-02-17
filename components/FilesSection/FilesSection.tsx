@@ -36,8 +36,8 @@ const FilesSection: NextPage = () => {
           View all
         </Button>
       </div>
-      <div className="my-4">
-        <Table variant="simple" bgColor="white">
+      <div className="my-4 overflow-x-scroll files-table">
+        <Table variant="simple" bgColor="white" className="overflow-scroll">
           <Thead>
             <Tr>
               <Th py="5" color="primaryVariant">
@@ -49,15 +49,15 @@ const FilesSection: NextPage = () => {
           </Thead>
           <Tbody>
             <Tr>
-              <Td py="5">
-                <div className="flex items-center">
+              <Td py="5" className="w-[180px]">
+                <div className="flex items-center w-[180px]">
                   <VscFilePdf size={25} color={customColors.error} />
                   <p className="ml-4 text-md font-semibold">Filename</p>
                 </div>
               </Td>
               <Td className="text-md text-[#949bc1]">PDF</Td>
-              <Td>
-                <div className="flex justify-between items-center">
+              <Td className="w-[290px]">
+                <div className="flex justify-between items-center w-[290px]">
                   <p className="text-md text-[#949bc1]">2022-Jan-30</p>
                   <Menu>
                     <MenuButton
@@ -80,15 +80,15 @@ const FilesSection: NextPage = () => {
               </Td>
             </Tr>
             <Tr>
-              <Td py="5">
-                <div className="flex items-center">
+              <Td py="5" className="w-[180px]">
+                <div className="flex items-center w-[180px]">
                   <VscFilePdf size={25} color={customColors.error} />
                   <p className="ml-4 text-md font-semibold">Filename</p>
                 </div>
               </Td>
               <Td className="text-md text-[#949bc1]">PDF</Td>
-              <Td>
-                <div className="flex justify-between items-center">
+              <Td className="w-[290px]">
+                <div className="flex justify-between items-center w-[290px]">
                   <p className="text-md text-[#949bc1]">2022-Jan-30</p>
                   <Menu>
                     <MenuButton
@@ -111,15 +111,15 @@ const FilesSection: NextPage = () => {
               </Td>
             </Tr>
             <Tr>
-              <Td py="5">
-                <div className="flex items-center">
+              <Td py="5" className="w-[180px]">
+                <div className="flex items-center w-[180px]">
                   <VscFilePdf size={25} color={customColors.error} />
                   <p className="ml-4 text-md font-semibold">Filename</p>
                 </div>
               </Td>
               <Td className="text-md text-[#949bc1]">PDF</Td>
-              <Td>
-                <div className="flex justify-between items-center">
+              <Td className="w-[290px]">
+                <div className="flex justify-between items-center w-[290px]">
                   <p className="text-md text-[#949bc1]">2022-Jan-30</p>
                   <Menu>
                     <MenuButton
@@ -144,6 +144,15 @@ const FilesSection: NextPage = () => {
           </Tbody>
         </Table>
       </div>
+      <style jsx>
+        {`
+          @media only screen and (min-width: 775px) {
+            .files-table {
+              overflow-x: hidden;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };

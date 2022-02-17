@@ -53,10 +53,21 @@ const HomePage: NextPage<Props> = (props) => {
             <FilesSection />
           </div>
         </div>
-        <div className="lg:w-[30%] flex justify-between lg:flex-col md:items-center md:w[100%]">
+        <div className="lg:w-[30%] sm:flex sm:justify-between lg:flex-col sm:items-center sm:w-[100%] text-center progress">
           <StorageProgressBar />
           <StorageUpgradeSection />
         </div>
+        <style jsx>
+          {`
+            @media only screen and (min-width: 440px) {
+              .progress {
+                display: flex;
+                justify-content: justify-between;
+                align-items: center;
+              }
+            }
+          `}
+        </style>
       </div>
     </Root>
   );
