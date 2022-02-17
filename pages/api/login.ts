@@ -1,14 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import withDbConnection from "../../backend/middlewares/main";
+import withDbConnection from "../../middlewares/main";
 import AuthService from "../../services/authService";
 import { generateJwt } from "../../utils/utils";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const data = JSON.parse(req.body);
-  const auth = new AuthService();
 
   try {
-    const user = await auth.login(data.email, data.password);
+    const user = await AuthService.login(data.email, data.password);
 
     if (user === null) {
       res.status(200).json({

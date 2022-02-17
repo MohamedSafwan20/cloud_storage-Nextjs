@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import connectToDb from "../../config/db";
+import connectToDb from "../config/db";
 
 const withDbConnection = (handler: any) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {

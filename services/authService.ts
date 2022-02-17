@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import IUser from "../backend/models/IUser";
-import User from "../backend/models/User";
+import IUser from "../models/IUser";
+import User from "../models/User";
 
 type LoginRes = {
   data: IUser | null;
@@ -12,7 +12,10 @@ type VerifyRes = {
 };
 
 class AuthService {
-  public async register(email: string, password: string): Promise<IUser> {
+  public static async register(
+    email: string,
+    password: string
+  ): Promise<IUser> {
     const user = await User.create({
       email,
       password: bcrypt.hashSync(password, 10),
@@ -21,7 +24,7 @@ class AuthService {
     return user;
   }
 
-  public async login(
+  public static async login(
     email: string,
     password: string
   ): Promise<LoginRes | null> {
@@ -42,7 +45,7 @@ class AuthService {
     }
   }
 
-  public async isUserAuthenticated(
+  public static async isUserAuthenticated(
     token: string | undefined
   ): Promise<boolean> {
     try {

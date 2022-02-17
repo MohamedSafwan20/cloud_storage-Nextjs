@@ -8,6 +8,7 @@ import {
   InputLeftElement,
   useToast,
 } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -65,6 +66,7 @@ const Register: NextPage = () => {
     toastRef.current = toast({
       title: "Loading..",
       status: "info",
+      duration: null,
     }) as string;
 
     const response = await fetch("/api/register", {
@@ -78,6 +80,8 @@ const Register: NextPage = () => {
     const data = await response.json();
 
     if (data.status) {
+      Cookies.set("auth_token", data.auth_token, { path: "/" });
+
       toast({
         title: "Account created.",
         description: "We've created your account for you.",

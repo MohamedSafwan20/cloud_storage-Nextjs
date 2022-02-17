@@ -1,4 +1,11 @@
-import { Avatar, IconButton, Slide, useDisclosure } from "@chakra-ui/react";
+import {
+  Avatar,
+  IconButton,
+  Slide,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,14 +14,35 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { BiMenu } from "react-icons/bi";
 import { IoIosClose } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { RiDeleteBin6Line, RiUser3Line } from "react-icons/ri";
+import { RiDeleteBin6Line, RiLogoutBoxLine, RiUser3Line } from "react-icons/ri";
 import { VscFiles } from "react-icons/vsc";
 import logo from "../../assets/images/logo.png";
 
 const SideNavbar: NextPage = () => {
   const router = useRouter();
+  const toast = useToast();
 
   const { isOpen, onToggle } = useDisclosure();
+
+  const logout = () => {
+    try {
+      Cookies.remove("auth_token");
+
+      toast({
+        title: "Logged out",
+        status: "success",
+        isClosable: true,
+      });
+
+      router.replace("/login");
+    } catch (_err) {
+      toast({
+        title: "Error",
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <>
@@ -103,6 +131,16 @@ const SideNavbar: NextPage = () => {
               >
                 <IoSettingsOutline size={20} color="white" />
               </div>
+              <div
+                onClick={logout}
+                className={
+                  router.pathname === "/logout"
+                    ? "flex justify-center items-center py-5 cursor-pointer bg-opacity-10 bg-disabled relative after:container after:absolute after:left-0 after:w-1 after:h-full after:bg-disabled"
+                    : "transition-all duration-300 flex justify-center items-center py-5 cursor-pointer hover:bg-opacity-10 hover:bg-disabled relative hover:after:container hover:after:absolute hover:after:left-0 hover:after:w-1 hover:after:h-full hover:after:bg-disabled"
+                }
+              >
+                <RiLogoutBoxLine size={20} color="white" />
+              </div>
             </div>
           </div>
           <div className="p-3">
@@ -175,6 +213,16 @@ const SideNavbar: NextPage = () => {
               }
             >
               <IoSettingsOutline size={20} color="white" />
+            </div>
+            <div
+              onClick={logout}
+              className={
+                router.pathname === "/logout"
+                  ? "flex justify-center items-center py-5 cursor-pointer bg-opacity-10 bg-disabled relative after:container after:absolute after:left-0 after:w-1 after:h-full after:bg-disabled"
+                  : "transition-all duration-300 flex justify-center items-center py-5 cursor-pointer hover:bg-opacity-10 hover:bg-disabled relative hover:after:container hover:after:absolute hover:after:left-0 hover:after:w-1 hover:after:h-full hover:after:bg-disabled"
+              }
+            >
+              <RiLogoutBoxLine size={20} color="white" />
             </div>
           </div>
         </div>
