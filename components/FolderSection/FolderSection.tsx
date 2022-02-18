@@ -1,6 +1,5 @@
 import { Button } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import FolderCard from "../FolderCard/FolderCard";
 
@@ -20,6 +19,8 @@ const FolderSection: NextPage = () => {
         </Button>
       </div>
       <div className="mt-4 flex items-center justify-center flex-wrap">
+        <FolderCard className="md:w-1/4 w-1/3" />
+        <FolderCard className="md:w-1/4 w-1/3" />
         <FolderCard className="md:w-1/4 w-1/3" />
         <FolderCard className="md:w-1/4 w-1/3" />
         <FolderCard className="md:w-1/4 w-1/3" />

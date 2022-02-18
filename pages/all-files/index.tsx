@@ -1,8 +1,33 @@
-import type { NextPage } from "next";
+/* eslint-disable react-hooks/exhaustive-deps */
+import type { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import FileCard from "../../components/FileCard/FileCard";
 import Root from "../../components/Root";
+import Routes from "../../config/routes";
+import AuthService from "../../services/authService";
 
-const AllFiles: NextPage = () => {
+type Props = {
+  isAuthenticated: boolean;
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let isAuthenticated = await AuthService.isUserAuthenticated(
+    context.req.headers.cookie
+  );
+
+  return {
+    props: { isAuthenticated },
+  };
+};
+
+const AllFiles: NextPage<Props> = (props) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!props.isAuthenticated) router.replace(Routes.Login);
+  }, []);
+
   return (
     <Root>
       <div className="py-16 px-14">

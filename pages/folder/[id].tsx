@@ -1,14 +1,36 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { BiChevronRight } from "react-icons/bi";
 import FileCard from "../../components/FileCard/FileCard";
 import FolderCard from "../../components/FolderCard/FolderCard";
 import Root from "../../components/Root";
+import Routes from "../../config/routes";
+import AuthService from "../../services/authService";
 
-const Folder: NextPage = () => {
+type Props = {
+  isAuthenticated: boolean;
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let isAuthenticated = await AuthService.isUserAuthenticated(
+    context.req.headers.cookie
+  );
+
+  return {
+    props: { isAuthenticated },
+  };
+};
+
+const Folder: NextPage<Props> = (props) => {
   const router = useRouter();
+
+  useEffect(() => {
+    if (!props.isAuthenticated) router.replace(Routes.Login);
+  }, []);
 
   return (
     <Root>
