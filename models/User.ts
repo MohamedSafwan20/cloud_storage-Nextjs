@@ -2,10 +2,16 @@ import mongoose from "mongoose";
 
 const filesAndFoldersSchema = new mongoose.Schema({
   path: {
-    type: Map,
+    type: String,
+    required: true,
   },
   type: {
     type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
   },
 });
 

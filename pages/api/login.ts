@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import withDbConnection from "../../middlewares/main";
+import { withDbConnection } from "../../middlewares/main";
 import AuthService from "../../services/authService";
 import { generateJwt } from "../../utils/utils";
 

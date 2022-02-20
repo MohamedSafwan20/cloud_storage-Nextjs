@@ -47,17 +47,13 @@ class AuthService {
 
   public static async isUserAuthenticated(
     token: string | undefined
-  ): Promise<boolean> {
+  ): Promise<boolean | string> {
     try {
       if (token === undefined) return false;
 
-      const formattedToken = token.split("=")[1];
-      const data = jwt.verify(
-        formattedToken,
-        process.env.JWT_SECRET!!
-      ) as VerifyRes;
+      const data = jwt.verify(token, process.env.JWT_SECRET!!) as VerifyRes;
 
-      return data.id ? true : false;
+      return data.id ? data.id : false;
     } catch (_err) {
       return false;
     }

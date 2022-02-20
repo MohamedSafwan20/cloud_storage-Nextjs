@@ -12,6 +12,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -28,7 +29,7 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let isAuthenticated = await AuthService.isUserAuthenticated(
-    context.req.headers.cookie
+    context.req.headers.cookie?.split("=")[1]
   );
 
   return {
@@ -83,28 +84,30 @@ const CreateFolderModal: NextPage<any> = ({ isOpen, onClose }) => {
 
   const [folderName, setFolderName] = useState("");
 
-  const [hasFolderNameError, setHasFolderNameError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [folderNameError, setFolderNameError] = useState("");
 
   const addFolder = async () => {
-    setIsLoading(true);
-    setHasFolderNameError(false);
+    setFolderNameError("");
 
     if (folderName !== "") {
       const path = router.asPath === "/all-folders" ? "/" : router.asPath;
 
       const res = await fetch("/api/folders/add-folder", {
         method: "POST",
-        body: JSON.stringify({ name: folderName, path }),
+        body: JSON.stringify({ name: folderName, path, type: "folder" }),
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
         },
       });
       const data = await res.json();
 
-      console.log(data);
+      if (data.status) {
+        onClose();
+      } else {
+        setFolderNameError(data.message);
+      }
     } else {
-      setHasFolderNameError(true);
+      setFolderNameError("Invalid folder name");
     }
   };
 
@@ -116,13 +119,13 @@ const CreateFolderModal: NextPage<any> = ({ isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <Input
-            isInvalid={hasFolderNameError}
+            isInvalid={folderNameError ? true : false}
             placeholder="Folder name"
             value={folderName}
             onChange={(e) => setFolderName(e.target.value)}
           />
-          {hasFolderNameError && (
-            <p className="text-error font-semibold">Invalid folder name</p>
+          {folderNameError && (
+            <p className="text-error font-semibold">{folderNameError}</p>
           )}
         </ModalBody>
 
