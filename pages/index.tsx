@@ -11,24 +11,33 @@ import StorageProgressBar from "../components/StorageProgressBar/StorageProgress
 import StorageUpgradeSection from "../components/StorageUpgradeSection/StorageUpgradeSection";
 import customColors from "../config/colors";
 import Routes from "../config/routes";
+import IFileOrFolder from "../models/IFileOrFolder";
 import AuthService from "../services/authService";
+import FolderService from "../services/folderService";
 
 type Props = {
   isAuthenticated: boolean;
+  folders: string;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let isAuthenticated = await AuthService.isUserAuthenticated(
+  let isAuthenticated = AuthService.isUserAuthenticated(
     context.req.headers.cookie?.split("=")[1]
   );
 
+  const folders = await FolderService.getAllFolders(
+    context.req.headers.cookie?.split("=")[1]!!
+  );
+
   return {
-    props: { isAuthenticated },
+    props: { isAuthenticated, folders: JSON.stringify(folders) },
   };
 };
 
 const HomePage: NextPage<Props> = (props) => {
   const router = useRouter();
+
+  const folders = JSON.parse(props.folders) as Array<IFileOrFolder>;
 
   useEffect(() => {
     if (!props.isAuthenticated) router.replace(Routes.Login);
@@ -47,7 +56,7 @@ const HomePage: NextPage<Props> = (props) => {
                 <Input placeholder="Search Files" border="none" />
               </InputGroup>
             </div>
-            <FolderSection />
+            <FolderSection folders={folders} />
             <FilesSection />
           </div>
         </div>

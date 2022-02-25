@@ -21,22 +21,17 @@ interface FolderCardProps {
   className?: string;
   isFavorite?: boolean;
   isDeleted?: boolean;
+  folderName: string;
 }
 
-const FolderCard: NextPage<FolderCardProps> = ({
-  className,
-  isFavorite = false,
-  isDeleted = false,
-}: FolderCardProps) => {
+const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
   const router = useRouter();
-
-  const name = "Folder Name";
 
   return (
     <div
       className={
         "card cursor-pointer flex flex-col justify-center p-3 m-4 folder " +
-        className
+        props.className
       }
       onClick={() => {
         router.push("/folder/23");
@@ -44,7 +39,7 @@ const FolderCard: NextPage<FolderCardProps> = ({
     >
       <div className="flex justify-between w-full">
         <BsFillFolderFill size={46} color={customColors.primary} />
-        {isFavorite ? (
+        {props.isFavorite ? (
           <Menu>
             <MenuButton
               onClick={(e) => {
@@ -72,7 +67,7 @@ const FolderCard: NextPage<FolderCardProps> = ({
               </MenuItem>
             </MenuList>
           </Menu>
-        ) : isDeleted ? (
+        ) : props.isDeleted ? (
           <Menu>
             <MenuButton
               onClick={(e) => {
@@ -155,7 +150,9 @@ const FolderCard: NextPage<FolderCardProps> = ({
       </div>
       <div>
         <h4 className="h4">
-          {name.length > 15 ? `${name.substring(0, 15)}...` : name}
+          {props.folderName.length > 15
+            ? `${props.folderName.substring(0, 15)}...`
+            : props.folderName}
         </h4>
         <p className="text-disabledVariant text-[0.86em]">
           1 folders, 123 files

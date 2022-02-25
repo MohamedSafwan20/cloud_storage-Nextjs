@@ -21,25 +21,34 @@ import FolderCard from "../../components/FolderCard/FolderCard";
 import Root from "../../components/Root";
 import customColors from "../../config/colors";
 import Routes from "../../config/routes";
+import IFileOrFolder from "../../models/IFileOrFolder";
 import AuthService from "../../services/authService";
+import FolderService from "../../services/folderService";
 
 type Props = {
   isAuthenticated: boolean;
+  folders: string;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let isAuthenticated = await AuthService.isUserAuthenticated(
+  const isAuthenticated = AuthService.isUserAuthenticated(
     context.req.headers.cookie?.split("=")[1]
   );
 
+  const folders = await FolderService.getAllFolders(
+    context.req.headers.cookie?.split("=")[1]!!
+  );
+
   return {
-    props: { isAuthenticated },
+    props: { isAuthenticated, folders: JSON.stringify(folders) },
   };
 };
 
 const AllFolders: NextPage<Props> = (props) => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const folders = JSON.parse(props.folders);
 
   useEffect(() => {
     if (!props.isAuthenticated) router.replace(Routes.Login);
@@ -63,15 +72,13 @@ const AllFolders: NextPage<Props> = (props) => {
               <IoAddOutline size={35} color={customColors.primary} />
             </IconButton>
           </div>
-          <FolderCard className="w-1/6" />
-          <FolderCard className="w-1/6" />
-          <FolderCard className="w-1/6" />
-          <FolderCard className="w-1/6" />
-          <FolderCard className="w-1/6" />
-          <FolderCard className="w-1/6" />
-          <FolderCard className="w-1/6" />
-          <FolderCard className="w-1/6" />
-          <FolderCard className="w-1/6" />
+          {folders.map((folder: IFileOrFolder) => (
+            <FolderCard
+              className="w-1/6"
+              key={folder._id}
+              folderName={folder.name}
+            />
+          ))}
         </div>
         <CreateFolderModal isOpen={isOpen} onClose={onClose} />
       </div>

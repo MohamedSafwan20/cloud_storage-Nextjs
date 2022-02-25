@@ -45,9 +45,9 @@ class AuthService {
     }
   }
 
-  public static async isUserAuthenticated(
+  public static isUserAuthenticated(
     token: string | undefined
-  ): Promise<boolean | string> {
+  ): boolean | string {
     try {
       if (token === undefined) return false;
 

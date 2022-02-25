@@ -1,14 +1,11 @@
+import connectToDb from "../config/db";
+import IFileOrFolder from "../models/IFileOrFolder";
 import User from "../models/User";
-
-type FolderData = {
-  path: string;
-  name: string;
-  type: string;
-};
+import AuthService from "./authService";
 
 export default class FolderService {
   public static async addFolder(
-    data: FolderData,
+    data: IFileOrFolder,
     userId: string
   ): Promise<boolean> {
     const user = await User.findById(userId);
@@ -41,5 +38,21 @@ export default class FolderService {
 
       return true;
     }
+  }
+
+  public static async getAllFolders(
+    token: string
+  ): Promise<Array<IFileOrFolder>> {
+    const userId = AuthService.isUserAuthenticated(token);
+
+    if (userId === false) {
+      return [];
+    }
+
+    await connectToDb();
+
+    const user = await User.findById(userId);
+
+    return user.filesAndFolders.filter((item: any) => item.type === "folder");
   }
 }

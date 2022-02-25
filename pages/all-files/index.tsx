@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let isAuthenticated = await AuthService.isUserAuthenticated(
+  let isAuthenticated = AuthService.isUserAuthenticated(
     context.req.headers.cookie?.split("=")[1]?.split("=")[1]
   );
 
