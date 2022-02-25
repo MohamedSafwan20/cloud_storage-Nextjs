@@ -54,6 +54,7 @@ const AllFolders: NextPage<Props> = (props) => {
   );
   const [folderName, setFolderName] = useState("");
   const [folderNameError, setFolderNameError] = useState("");
+
   const addFolder = async () => {
     setFolderNameError("");
 

@@ -3,26 +3,29 @@ import IFileOrFolder from "../models/IFileOrFolder";
 import User from "../models/User";
 import AuthService from "./authService";
 
-export default class FolderService {
-  public static async addFolder(
-    data: IFileOrFolder,
-    userId: string
-  ): Promise<boolean> {
+type FileReq = {
+  name: string;
+  type: string;
+  path: string;
+};
+
+export default class FileService {
+  public static async addFile(data: FileReq, userId: string): Promise<boolean> {
     const user = await User.findById(userId);
 
-    let folderExists = false;
+    let fileExists = false;
 
     // Algorithm for checking if folder exists
     user.filesAndFolders.some((item: any) => {
       if (item.name === data.name && item.path === data.path) {
-        folderExists = true;
+        fileExists = true;
         return true;
       } else {
-        folderExists = false;
+        fileExists = false;
       }
     });
 
-    if (folderExists) {
+    if (fileExists) {
       return false;
     } else {
       user.filesAndFolders.push({
@@ -37,7 +40,7 @@ export default class FolderService {
     }
   }
 
-  public static async deleteFolder(
+  public static async deleteFile(
     folderName: string,
     userId: string
   ): Promise<boolean> {
@@ -52,7 +55,7 @@ export default class FolderService {
     return false;
   }
 
-  public static async getAllFolders(
+  public static async getAllFiles(
     token: string
   ): Promise<Array<IFileOrFolder>> {
     const userId = AuthService.isUserAuthenticated(token);
