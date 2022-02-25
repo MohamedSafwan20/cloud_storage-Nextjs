@@ -1,10 +1,10 @@
 import { Button } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import Image from "next/image";
 import { useRouter } from "next/router";
+import folderNotFoundImg from "../../assets/images/folder-not-found.png";
 import IFileOrFolder from "../../models/IFileOrFolder";
 import FolderCard from "../FolderCard/FolderCard";
-import folderNotFoundImg from "../../assets/images/folder-not-found.png";
-import Image from "next/image";
 
 type Props = {
   folders: Array<IFileOrFolder>;
@@ -12,6 +12,9 @@ type Props = {
 
 const FolderSection: NextPage<Props> = (props) => {
   const router = useRouter();
+
+  const folders = props.folders;
+  folders.length > 6 ? (folders.length = 6) : null;
 
   return (
     <div className="mt-12 mb-8">
@@ -26,8 +29,8 @@ const FolderSection: NextPage<Props> = (props) => {
         </Button>
       </div>
       <div className="mt-4 flex items-center justify-center flex-wrap">
-        {props.folders.length > 0 ? (
-          props.folders.map((item) => (
+        {folders.length > 0 ? (
+          folders.map((item) => (
             <FolderCard
               key={item._id}
               className="md:w-1/4 w-1/3"

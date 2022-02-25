@@ -21,13 +21,11 @@ type Props = {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let isAuthenticated = AuthService.isUserAuthenticated(
-    context.req.headers.cookie?.split("=")[1]
-  );
+  const authToken = context.req.headers.cookie?.split("=")[1]!!;
 
-  const folders = await FolderService.getAllFolders(
-    context.req.headers.cookie?.split("=")[1]!!
-  );
+  let isAuthenticated = AuthService.isUserAuthenticated(authToken);
+
+  const folders = await FolderService.getAllFolders(authToken);
 
   return {
     props: { isAuthenticated, folders: JSON.stringify(folders) },

@@ -19,8 +19,8 @@ const withDbConnection = (handler: any) => {
 };
 
 const withJwtVerification = (handler: any) => {
-  return async (req: NextApiRequest, res: NextApiResponse) => {
-    const userId = await AuthService.isUserAuthenticated(
+  return (req: NextApiRequest, res: NextApiResponse) => {
+    const userId = AuthService.isUserAuthenticated(
       req.headers.authorization?.split(" ")[1]
     );
 

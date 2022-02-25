@@ -40,6 +40,21 @@ export default class FolderService {
     }
   }
 
+  public static async deleteFolder(
+    folderName: string,
+    userId: string
+  ): Promise<boolean> {
+    const res = await User.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { filesAndFolders: { name: folderName } } },
+      { new: true }
+    );
+
+    if (res._id) return true;
+
+    return false;
+  }
+
   public static async getAllFolders(
     token: string
   ): Promise<Array<IFileOrFolder>> {

@@ -4,7 +4,9 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useToast,
 } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
@@ -16,6 +18,7 @@ import {
   MdSettingsBackupRestore,
 } from "react-icons/md";
 import customColors from "../../config/colors";
+import { refresh } from "../../utils/utils";
 
 interface FolderCardProps {
   className?: string;
@@ -26,6 +29,42 @@ interface FolderCardProps {
 
 const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
   const router = useRouter();
+  const toast = useToast();
+
+  const deleteFolder = async () => {
+    try {
+      const res = await fetch("/api/folders/delete", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+        body: JSON.stringify({ folderName: props.folderName }),
+      });
+      const data = await res.json();
+
+      if (data.status) {
+        refresh();
+
+        toast({
+          title: "Deleted",
+          status: "success",
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: data.message,
+          status: "error",
+          isClosable: true,
+        });
+      }
+    } catch (_err) {
+      toast({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <div
@@ -140,6 +179,7 @@ const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
                 icon={<MdDelete color={customColors.error} size={20} />}
                 onClick={(e) => {
                   e.stopPropagation();
+                  deleteFolder();
                 }}
               >
                 Delete

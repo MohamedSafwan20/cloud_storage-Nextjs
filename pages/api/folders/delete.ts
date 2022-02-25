@@ -3,7 +3,6 @@ import {
   withDbConnection,
   withJwtVerification,
 } from "../../../middlewares/main";
-import User from "../../../models/User";
 import FolderService from "../../../services/folderService";
 
 async function handler(
@@ -14,7 +13,7 @@ async function handler(
   const data = JSON.parse(req.body);
 
   try {
-    const folderRes = await FolderService.addFolder(data, userId);
+    const folderRes = await FolderService.deleteFolder(data.folderName, userId);
 
     if (folderRes) {
       res.status(200).json({ status: 1 });
@@ -22,7 +21,7 @@ async function handler(
     } else {
       res.status(200).json({
         status: 0,
-        message: "Folder already exists",
+        message: "Couldn't delete folder",
       });
       return;
     }

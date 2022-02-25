@@ -9,4 +9,6 @@ const generateJwt = (userId: string) => {
   );
 };
 
-export { generateJwt };
+const refresh = () => window.location.reload();
+
+export { generateJwt, refresh };

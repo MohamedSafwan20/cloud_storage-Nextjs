@@ -24,6 +24,7 @@ import Routes from "../../config/routes";
 import IFileOrFolder from "../../models/IFileOrFolder";
 import AuthService from "../../services/authService";
 import FolderService from "../../services/folderService";
+import { refresh } from "../../utils/utils";
 
 type Props = {
   isAuthenticated: boolean;
@@ -48,7 +49,37 @@ const AllFolders: NextPage<Props> = (props) => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const folders = JSON.parse(props.folders);
+  const [folders, setFolders] = useState(
+    JSON.parse(props.folders) as Array<IFileOrFolder>
+  );
+  const [folderName, setFolderName] = useState("");
+  const [folderNameError, setFolderNameError] = useState("");
+  const addFolder = async () => {
+    setFolderNameError("");
+
+    if (folderName !== "") {
+      const path = router.asPath === "/all-folders" ? "/" : router.asPath;
+
+      const res = await fetch("/api/folders/add-folder", {
+        method: "POST",
+        body: JSON.stringify({ name: folderName, path, type: "folder" }),
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+      });
+      const data = await res.json();
+
+      if (data.status) {
+        refresh();
+
+        onClose();
+      } else {
+        setFolderNameError(data.message);
+      }
+    } else {
+      setFolderNameError("Invalid folder name");
+    }
+  };
 
   useEffect(() => {
     if (!props.isAuthenticated) router.replace(Routes.Login);
@@ -80,73 +111,38 @@ const AllFolders: NextPage<Props> = (props) => {
             />
           ))}
         </div>
-        <CreateFolderModal isOpen={isOpen} onClose={onClose} />
+        {/* Create Folder Modal */}
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Enter folder name</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Input
+                isInvalid={folderNameError ? true : false}
+                placeholder="Folder name"
+                value={folderName}
+                onChange={(e) => setFolderName(e.target.value)}
+              />
+              {folderNameError && (
+                <p className="text-error font-semibold">{folderNameError}</p>
+              )}
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                variant="outline"
+                colorScheme="primaryScheme"
+                onClick={addFolder}
+              >
+                Add folder
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+        {/*End of  Create Folder Modal */}
       </div>
     </Root>
-  );
-};
-
-const CreateFolderModal: NextPage<any> = ({ isOpen, onClose }) => {
-  const router = useRouter();
-
-  const [folderName, setFolderName] = useState("");
-
-  const [folderNameError, setFolderNameError] = useState("");
-
-  const addFolder = async () => {
-    setFolderNameError("");
-
-    if (folderName !== "") {
-      const path = router.asPath === "/all-folders" ? "/" : router.asPath;
-
-      const res = await fetch("/api/folders/add-folder", {
-        method: "POST",
-        body: JSON.stringify({ name: folderName, path, type: "folder" }),
-        headers: {
-          Authorization: `Bearer ${Cookies.get("auth_token")}`,
-        },
-      });
-      const data = await res.json();
-
-      if (data.status) {
-        onClose();
-      } else {
-        setFolderNameError(data.message);
-      }
-    } else {
-      setFolderNameError("Invalid folder name");
-    }
-  };
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Enter folder name</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Input
-            isInvalid={folderNameError ? true : false}
-            placeholder="Folder name"
-            value={folderName}
-            onChange={(e) => setFolderName(e.target.value)}
-          />
-          {folderNameError && (
-            <p className="text-error font-semibold">{folderNameError}</p>
-          )}
-        </ModalBody>
-
-        <ModalFooter>
-          <Button
-            variant="outline"
-            colorScheme="primaryScheme"
-            onClick={addFolder}
-          >
-            Add folder
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
   );
 };
 
