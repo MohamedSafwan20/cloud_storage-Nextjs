@@ -7,30 +7,40 @@ import {
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { AiOutlineFilePdf } from "react-icons/ai";
+import {
+  AiOutlineFileImage,
+  AiOutlineFilePdf,
+  AiOutlineFileUnknown,
+  AiOutlineFileWord,
+} from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { FaHeartBroken } from "react-icons/fa";
+import { FaHeartBroken, FaRegFileAudio, FaRegFileVideo } from "react-icons/fa";
 import {
   MdDelete,
   MdOutlineFavorite,
   MdSettingsBackupRestore,
 } from "react-icons/md";
+import { VscFilePdf } from "react-icons/vsc";
 import customColors from "../../config/colors";
+import IFileOrFolder from "../../models/IFileOrFolder";
+import { getExtensionFromFilename } from "../../utils/utils";
 
 interface FileCardProps {
   className?: string;
   isFavorite?: boolean;
   isDeleted?: boolean;
+  file: IFileOrFolder;
 }
 
 const FileCard: NextPage<FileCardProps> = ({
   className,
   isFavorite = false,
   isDeleted = false,
+  file,
 }: FileCardProps) => {
   const router = useRouter();
 
-  const name = "File Name";
+  const ext = getExtensionFromFilename(file.name).toUpperCase();
 
   return (
     <div
@@ -42,7 +52,19 @@ const FileCard: NextPage<FileCardProps> = ({
       }}
     >
       <div className="flex justify-between w-full">
-        <AiOutlineFilePdf size={46} color={customColors.error} />
+        {ext === "PDF" ? (
+          <VscFilePdf size={35} color={customColors.error} />
+        ) : ext === "PNG" || ext === "JPG" || ext === "JPEG" ? (
+          <AiOutlineFileImage size={35} color={customColors.error} />
+        ) : ext === "XLSX" ? (
+          <AiOutlineFileWord size={35} color={customColors.error} />
+        ) : ext === "MP4" || ext === "MKV" || ext === "AVI" ? (
+          <FaRegFileVideo size={35} color={customColors.error} />
+        ) : ext === "MP3" ? (
+          <FaRegFileAudio size={35} color={customColors.error} />
+        ) : (
+          <AiOutlineFileUnknown size={35} color={customColors.error} />
+        )}
         {isFavorite ? (
           <Menu>
             <MenuButton
@@ -154,7 +176,9 @@ const FileCard: NextPage<FileCardProps> = ({
       </div>
       <div>
         <h4 className="h4">
-          {name.length > 15 ? `${name.substring(0, 15)}...` : name}
+          {file.name.length > 15
+            ? `${file.name.substring(0, 15)}...`
+            : file.name}
         </h4>
       </div>
     </div>

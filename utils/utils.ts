@@ -11,4 +11,7 @@ const generateJwt = (userId: string) => {
 
 const refresh = () => window.location.reload();
 
-export { generateJwt, refresh };
+const getExtensionFromFilename = (filename: string) =>
+  filename.substring(filename.lastIndexOf(".") + 1);
+
+export { generateJwt, refresh, getExtensionFromFilename };

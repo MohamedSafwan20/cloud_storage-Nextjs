@@ -22,20 +22,25 @@ import FileCard from "../../components/FileCard/FileCard";
 import Root from "../../components/Root";
 import customColors from "../../config/colors";
 import Routes from "../../config/routes";
+import IFileOrFolder from "../../models/IFileOrFolder";
 import AuthService from "../../services/authService";
+import FileService from "../../services/fileService";
 import { refresh } from "../../utils/utils";
 
 type Props = {
   isAuthenticated: boolean;
+  files: string;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let isAuthenticated = AuthService.isUserAuthenticated(
-    context.req.headers.cookie?.split("=")[1]
-  );
+  const authToken = context.req.headers.cookie?.split("=")[1];
+
+  let isAuthenticated = AuthService.isUserAuthenticated(authToken);
+
+  const files = await FileService.getAllFiles(authToken!!);
 
   return {
-    props: { isAuthenticated },
+    props: { isAuthenticated, files: JSON.stringify(files) },
   };
 };
 
@@ -44,14 +49,19 @@ const AllFiles: NextPage<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
+  const files = JSON.parse(props.files) as Array<IFileOrFolder>;
   const [fileName, setFileName] = useState("Upload Here");
   const [file, setFile] = useState<File>();
   const [fileError, setFileError] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const addFile = async (e: any) => {
     e.preventDefault();
 
     if (file !== undefined) {
+      setIsLoading(true);
+
       const formData = new FormData();
       formData.append("file", file!!);
 
@@ -81,6 +91,8 @@ const AllFiles: NextPage<Props> = (props) => {
       } else {
         setFileError(data.message);
       }
+
+      setIsLoading(false);
     } else {
       setFileError("File required");
     }
@@ -108,15 +120,9 @@ const AllFiles: NextPage<Props> = (props) => {
               <IoAddOutline size={35} color={customColors.primary} />
             </IconButton>
           </div>
-          <FileCard className="w-1/6 h-[120px]" />
-          <FileCard className="w-1/6 h-[120px]" />
-          <FileCard className="w-1/6 h-[120px]" />
-          <FileCard className="w-1/6 h-[120px]" />
-          <FileCard className="w-1/6 h-[120px]" />
-          <FileCard className="w-1/6 h-[120px]" />
-          <FileCard className="w-1/6 h-[120px]" />
-          <FileCard className="w-1/6 h-[120px]" />
-          <FileCard className="w-1/6 h-[120px]" />
+          {files.map((file) => (
+            <FileCard key={file._id} file={file} className="w-1/6 h-[120px]" />
+          ))}
         </div>
         {/* Create file Modal */}
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -152,6 +158,7 @@ const AllFiles: NextPage<Props> = (props) => {
                   variant="outline"
                   colorScheme="primaryScheme"
                   type="submit"
+                  isLoading={isLoading}
                 >
                   Upload
                 </Button>

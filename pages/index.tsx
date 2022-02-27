@@ -13,11 +13,13 @@ import customColors from "../config/colors";
 import Routes from "../config/routes";
 import IFileOrFolder from "../models/IFileOrFolder";
 import AuthService from "../services/authService";
+import FileService from "../services/fileService";
 import FolderService from "../services/folderService";
 
 type Props = {
   isAuthenticated: boolean;
   folders: string;
+  files: string;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -26,9 +28,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let isAuthenticated = AuthService.isUserAuthenticated(authToken);
 
   const folders = await FolderService.getAllFolders(authToken);
+  const files = await FileService.getAllFiles(authToken);
 
   return {
-    props: { isAuthenticated, folders: JSON.stringify(folders) },
+    props: {
+      isAuthenticated,
+      folders: JSON.stringify(folders),
+      files: JSON.stringify(files),
+    },
   };
 };
 
@@ -36,6 +43,7 @@ const HomePage: NextPage<Props> = (props) => {
   const router = useRouter();
 
   const folders = JSON.parse(props.folders) as Array<IFileOrFolder>;
+  const files = JSON.parse(props.files) as Array<IFileOrFolder>;
 
   useEffect(() => {
     if (!props.isAuthenticated) router.replace(Routes.Login);
@@ -55,7 +63,7 @@ const HomePage: NextPage<Props> = (props) => {
               </InputGroup>
             </div>
             <FolderSection folders={folders} />
-            <FilesSection />
+            <FilesSection filesData={files} />
           </div>
         </div>
         <div className="lg:w-[30%] sm:flex sm:justify-between lg:flex-col sm:items-center sm:w-[100%] text-center progress">

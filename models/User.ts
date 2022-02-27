@@ -1,19 +1,24 @@
 import mongoose from "mongoose";
 
-const filesAndFoldersSchema = new mongoose.Schema({
-  path: {
-    type: String,
-    required: true,
+const filesAndFoldersSchema = new mongoose.Schema(
+  {
+    path: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
   },
-  type: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const userSchema = new mongoose.Schema({
   email: {

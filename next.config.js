@@ -31,6 +31,7 @@ const nextConfig = {
     nkRnQNa/vRgBuLKwcDL+HbZUDadPgSdDQ18ghcyCS0xWc8W/U3sNnHhi2hBkDxoO
     xlNlf/CKkvIucS/v6mQMqtiK0jpS1l8pzv+yitxQvvpEtVWrUGIn0JTn72bt8CWW
     KfSJLfhKxLQAbqb0yQuy0N4=`,
+    UPLOAD_PATH: "./public/uploads",
   },
 };
 

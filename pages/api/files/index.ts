@@ -7,7 +7,7 @@ import FileService from "../../../services/fileService";
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "./public/uploads",
+    destination: process.env.UPLOAD_PATH,
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 });

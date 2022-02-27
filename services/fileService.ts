@@ -68,6 +68,6 @@ export default class FileService {
 
     const user = await User.findById(userId);
 
-    return user.filesAndFolders.filter((item: any) => item.type === "folder");
+    return user.filesAndFolders.filter((item: any) => item.type === "file");
   }
 }
