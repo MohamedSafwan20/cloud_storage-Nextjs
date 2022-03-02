@@ -15,7 +15,7 @@ import {
 import Cookies from "js-cookie";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { IoAddOutline } from "react-icons/io5";
 import FileCard from "../../components/FileCard/FileCard";
@@ -28,7 +28,6 @@ import FileService from "../../services/fileService";
 import { refresh } from "../../utils/utils";
 
 type Props = {
-  isAuthenticated: boolean;
   files: string;
 };
 
@@ -39,8 +38,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const files = await FileService.getAllFiles(authToken!!);
 
+  if (!isAuthenticated)
+    return {
+      redirect: {
+        permanent: true,
+        destination: Routes.Login,
+      },
+    };
+
   return {
-    props: { isAuthenticated, files: JSON.stringify(files) },
+    props: { files: JSON.stringify(files) },
   };
 };
 
@@ -97,10 +104,6 @@ const AllFiles: NextPage<Props> = (props) => {
       setFileError("File required");
     }
   };
-
-  useEffect(() => {
-    if (!props.isAuthenticated) router.replace(Routes.Login);
-  }, []);
 
   return (
     <Root>

@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import type { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import FilesSection from "../components/FilesSection/FilesSection";
 import FolderSection from "../components/FolderSection/FolderSection";
@@ -17,7 +15,6 @@ import FileService from "../services/fileService";
 import FolderService from "../services/folderService";
 
 type Props = {
-  isAuthenticated: boolean;
   folders: string;
   files: string;
 };
@@ -30,9 +27,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const folders = await FolderService.getAllFolders(authToken);
   const files = await FileService.getAllFiles(authToken);
 
+  if (!isAuthenticated)
+    return {
+      redirect: {
+        permanent: true,
+        destination: Routes.Login,
+      },
+    };
+
   return {
     props: {
-      isAuthenticated,
       folders: JSON.stringify(folders),
       files: JSON.stringify(files),
     },
@@ -40,14 +44,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const HomePage: NextPage<Props> = (props) => {
-  const router = useRouter();
-
   const folders = JSON.parse(props.folders) as Array<IFileOrFolder>;
   const files = JSON.parse(props.files) as Array<IFileOrFolder>;
-
-  useEffect(() => {
-    if (!props.isAuthenticated) router.replace(Routes.Login);
-  }, []);
 
   return (
     <Root>

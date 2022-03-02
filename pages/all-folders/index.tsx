@@ -15,7 +15,7 @@ import {
 import Cookies from "js-cookie";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import FolderCard from "../../components/FolderCard/FolderCard";
 import Root from "../../components/Root";
@@ -27,7 +27,6 @@ import FolderService from "../../services/folderService";
 import { refresh } from "../../utils/utils";
 
 type Props = {
-  isAuthenticated: boolean;
   folders: string;
 };
 
@@ -40,8 +39,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.req.headers.cookie?.split("=")[1]!!
   );
 
+  if (!isAuthenticated)
+    return {
+      redirect: {
+        permanent: true,
+        destination: Routes.Login,
+      },
+    };
+
   return {
-    props: { isAuthenticated, folders: JSON.stringify(folders) },
+    props: { folders: JSON.stringify(folders) },
   };
 };
 
@@ -81,10 +88,6 @@ const AllFolders: NextPage<Props> = (props) => {
       setFolderNameError("Invalid folder name");
     }
   };
-
-  useEffect(() => {
-    if (!props.isAuthenticated) router.replace(Routes.Login);
-  }, []);
 
   return (
     <Root>
