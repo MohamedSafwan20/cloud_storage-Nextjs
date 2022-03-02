@@ -4,12 +4,13 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Tooltip,
+  useToast,
 } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import {
   AiOutlineFileImage,
-  AiOutlineFilePdf,
   AiOutlineFileUnknown,
   AiOutlineFileWord,
 } from "react-icons/ai";
@@ -23,7 +24,11 @@ import {
 import { VscFilePdf } from "react-icons/vsc";
 import customColors from "../../config/colors";
 import IFileOrFolder from "../../models/IFileOrFolder";
-import { getExtensionFromFilename } from "../../utils/utils";
+import {
+  downloadFromPublicDirectory,
+  getExtensionFromFilename,
+  refresh,
+} from "../../utils/utils";
 
 interface FileCardProps {
   className?: string;
@@ -38,17 +43,66 @@ const FileCard: NextPage<FileCardProps> = ({
   isDeleted = false,
   file,
 }: FileCardProps) => {
-  const router = useRouter();
+  const toast = useToast();
 
   const ext = getExtensionFromFilename(file.name).toUpperCase();
+
+  const downloadFile = async () => {
+    const res = await fetch("/api/files/download", {
+      method: "POST",
+      body: JSON.stringify({ fileId: file._id }),
+      headers: {
+        Authorization: "Bearer " + Cookies.get("auth_token"),
+      },
+    });
+    const data = await res.json();
+
+    if (data.status) {
+      downloadFromPublicDirectory(file.name);
+    } else {
+      toast({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
+
+  const deleteFile = async () => {
+    const res = await fetch("/api/files/delete", {
+      method: "DELETE",
+      body: JSON.stringify({ fileId: file._id }),
+      headers: {
+        Authorization: "Bearer " + Cookies.get("auth_token"),
+      },
+    });
+    const data = await res.json();
+
+    if (data.status) {
+      refresh();
+
+      toast({
+        title: "File deleted successfully",
+        status: "success",
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <div
       className={
-        "card cursor-pointer flex flex-col justify-around p-3 m-4 " + className
+        "card cursor-pointer flex flex-col justify-around p-3 m-4 mb-10 " +
+        className
       }
       onClick={() => {
-        router.push("/folder/23");
+        downloadFile();
       }}
     >
       <div className="flex justify-between w-full">
@@ -166,6 +220,7 @@ const FileCard: NextPage<FileCardProps> = ({
                 icon={<MdDelete color={customColors.error} size={20} />}
                 onClick={(e) => {
                   e.stopPropagation();
+                  deleteFile();
                 }}
               >
                 Delete
@@ -175,11 +230,13 @@ const FileCard: NextPage<FileCardProps> = ({
         )}
       </div>
       <div>
-        <h4 className="h4">
-          {file.name.length > 15
-            ? `${file.name.substring(0, 15)}...`
-            : file.name}
-        </h4>
+        <Tooltip label={`Download ${file.name}`}>
+          <h4 className="h4">
+            {file.name.length > 15
+              ? `${file.name.substring(0, 15)}...`
+              : file.name}
+          </h4>
+        </Tooltip>
       </div>
     </div>
   );

@@ -49,12 +49,12 @@ const Folder: NextPage = () => {
           </Breadcrumb>
         </div>
         <div className="mt-[3rem] flex items-center flex-wrap">
-          <FolderCard className="w-1/6 h-[130px]" />
+          {/* <FolderCard className="w-1/6 h-[130px]" />
           <FolderCard className="w-1/6 h-[130px]" />
           <FolderCard className="w-1/6 h-[130px]" />
           <FolderCard className="w-1/6 h-[130px]" />
           <FileCard className="w-1/6 h-[130px]" />
-          <FileCard className="w-1/6 h-[130px]" />
+          <FileCard className="w-1/6 h-[130px]" /> */}
         </div>
       </div>
     </Root>

@@ -1,7 +1,9 @@
+import path from "path";
 import connectToDb from "../config/db";
 import IFileOrFolder from "../models/IFileOrFolder";
 import User from "../models/User";
 import AuthService from "./authService";
+import fs from "fs";
 
 type FileReq = {
   name: string;
@@ -40,19 +42,30 @@ export default class FileService {
     }
   }
 
-  public static async deleteFile(
-    folderName: string,
+  public static async deleteFileFromDb(
+    fileId: string,
     userId: string
   ): Promise<boolean> {
     const res = await User.findOneAndUpdate(
       { _id: userId },
-      { $pull: { filesAndFolders: { name: folderName } } },
+      { $pull: { filesAndFolders: { _id: fileId } } },
       { new: true }
     );
 
     if (res._id) return true;
 
     return false;
+  }
+
+  public static deleteFileFromLocalDirectory(filepath: string): boolean {
+    try {
+      var file = path.join(require("path").resolve("./"), filepath);
+      fs.unlinkSync(file);
+
+      return true;
+    } catch (_err) {
+      return false;
+    }
   }
 
   public static async getAllFiles(
@@ -69,5 +82,15 @@ export default class FileService {
     const user = await User.findById(userId);
 
     return user.filesAndFolders.filter((item: any) => item.type === "file");
+  }
+
+  public static async getFile(fileId: string, userId: string) {
+    const user = await User.findById(userId);
+
+    const file = await user.filesAndFolders.find(
+      (item: any) => item.type === "file" && item._id === fileId
+    );
+
+    return file;
   }
 }

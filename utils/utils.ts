@@ -14,4 +14,17 @@ const refresh = () => window.location.reload();
 const getExtensionFromFilename = (filename: string) =>
   filename.substring(filename.lastIndexOf(".") + 1);
 
-export { generateJwt, refresh, getExtensionFromFilename };
+const downloadFromPublicDirectory = (filename: string) => {
+  const a = document.createElement("a");
+  a.href = `/uploads/${filename}`;
+  a.download = filename;
+  a.click();
+  a.remove();
+};
+
+export {
+  generateJwt,
+  refresh,
+  getExtensionFromFilename,
+  downloadFromPublicDirectory,
+};

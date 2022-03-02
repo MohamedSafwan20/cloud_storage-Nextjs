@@ -4,12 +4,20 @@ import FileCard from "../../components/FileCard/FileCard";
 import FolderCard from "../../components/FolderCard/FolderCard";
 import Root from "../../components/Root";
 import Routes from "../../config/routes";
+import IFileOrFolder from "../../models/IFileOrFolder";
 import AuthService from "../../services/authService";
+import FileService from "../../services/fileService";
+
+type Props = {
+  files: string;
+};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let isAuthenticated = AuthService.isUserAuthenticated(
-    context.req.headers.cookie?.split("=")[1]
-  );
+  const authToken = context.req.headers.cookie?.split("=")[1];
+
+  let isAuthenticated = AuthService.isUserAuthenticated(authToken);
+
+  const files = await FileService.getAllFiles(authToken!!);
 
   if (!isAuthenticated)
     return {
@@ -20,24 +28,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
 
   return {
-    props: {},
+    props: { files: JSON.stringify(files) },
   };
 };
 
-const RecycleBin: NextPage = () => {
+const RecycleBin: NextPage<Props> = (props) => {
+  const files = JSON.parse(props.files) as Array<IFileOrFolder>;
   return (
     <Root>
       <div className="py-16 px-14">
         <h1 className="h3">Recycle Bin</h1>
         <div className="mt-4 flex items-center flex-wrap">
-          <FileCard isDeleted className="w-1/6 h-[120px]" />
-          <FileCard isDeleted className="w-1/6 h-[120px]" />
-          <FileCard isDeleted className="w-1/6 h-[120px]" />
-          <FileCard isDeleted className="w-1/6 h-[120px]" />
-          <FolderCard isDeleted className="w-1/6 h-[120px]" />
-          <FolderCard isDeleted className="w-1/6 h-[120px]" />
-          <FolderCard isDeleted className="w-1/6 h-[120px]" />
-          <FolderCard isDeleted className="w-1/6 h-[120px]" />
+          {files.map((file) => (
+            <FileCard
+              isDeleted
+              key={file._id}
+              file={file}
+              className="w-1/6 h-[120px]"
+            />
+          ))}
         </div>
       </div>
     </Root>

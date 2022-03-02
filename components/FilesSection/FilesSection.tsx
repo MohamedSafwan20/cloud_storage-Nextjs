@@ -6,13 +6,12 @@ import {
   MenuItem,
   MenuList,
   Table,
-  TableCaption,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { format } from "date-fns";
 import Cookies from "js-cookie";
@@ -29,7 +28,10 @@ import { MdOutlineDelete } from "react-icons/md";
 import { VscFilePdf } from "react-icons/vsc";
 import customColors from "../../config/colors";
 import IFileOrFolder from "../../models/IFileOrFolder";
-import { getExtensionFromFilename } from "../../utils/utils";
+import {
+  downloadFromPublicDirectory,
+  getExtensionFromFilename,
+} from "../../utils/utils";
 
 type Props = {
   filesData: Array<IFileOrFolder>;
@@ -37,6 +39,7 @@ type Props = {
 
 const FilesSection: NextPage<Props> = (props) => {
   const router = useRouter();
+  const toast = useToast();
 
   const files = props.filesData;
   files.length > 6 ? (files.length = 6) : null;
@@ -50,7 +53,16 @@ const FilesSection: NextPage<Props> = (props) => {
       },
     });
     const data = await res.json();
-    console.log(data);
+
+    if (data.status) {
+      downloadFromPublicDirectory(filename);
+    } else {
+      toast({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+      });
+    }
   };
 
   return (

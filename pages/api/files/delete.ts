@@ -3,7 +3,7 @@ import {
   withDbConnection,
   withJwtVerification,
 } from "../../../middlewares/main";
-import FolderService from "../../../services/folderService";
+import FileService from "../../../services/fileService";
 
 async function handler(
   req: NextApiRequest,
@@ -13,15 +13,16 @@ async function handler(
   const data = JSON.parse(req.body);
 
   try {
-    const folderRes = await FolderService.addFolder(data, userId);
+    const fileRes = await FileService.deleteFileFromDb(data.fileId, userId);
+    if (fileRes) {
+      FileService.deleteFileFromLocalDirectory("public/uploads/3.pdf");
 
-    if (folderRes) {
       res.status(200).json({ status: 1 });
       return;
     } else {
       res.status(200).json({
         status: 0,
-        message: "Folder already exists",
+        message: "File not found",
       });
       return;
     }
