@@ -31,6 +31,7 @@ import IFileOrFolder from "../../models/IFileOrFolder";
 import {
   downloadFromPublicDirectory,
   getExtensionFromFilename,
+  refresh,
 } from "../../utils/utils";
 
 type Props = {
@@ -56,6 +57,33 @@ const FilesSection: NextPage<Props> = (props) => {
 
     if (data.status) {
       downloadFromPublicDirectory(filename);
+    } else {
+      toast({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
+
+  const deleteFile = async (fileId: string, filename: string) => {
+    const res = await fetch("/api/files/delete", {
+      method: "DELETE",
+      body: JSON.stringify({ fileId, filename }),
+      headers: {
+        Authorization: "Bearer " + Cookies.get("auth_token"),
+      },
+    });
+    const data = await res.json();
+
+    if (data.status) {
+      refresh();
+
+      toast({
+        title: "File deleted successfully",
+        status: "success",
+        isClosable: true,
+      });
     } else {
       toast({
         title: "Something went wrong",
@@ -146,7 +174,12 @@ const FilesSection: NextPage<Props> = (props) => {
                           variant="outline"
                         />
                         <MenuList>
-                          <MenuItem icon={<MdOutlineDelete />}>Delete</MenuItem>
+                          <MenuItem
+                            icon={<MdOutlineDelete />}
+                            onClick={() => deleteFile(file._id, file.name)}
+                          >
+                            Delete
+                          </MenuItem>
                         </MenuList>
                       </Menu>
                     </div>
@@ -156,6 +189,13 @@ const FilesSection: NextPage<Props> = (props) => {
             })}
           </Tbody>
         </Table>
+        {files.length <= 0 && (
+          <div className="flex justify-center items-center p-6 bg-[white]">
+            <h2 className="font-bold text-2xl text-disabledVariant">
+              No Files
+            </h2>
+          </div>
+        )}
       </div>
       <style jsx>
         {`

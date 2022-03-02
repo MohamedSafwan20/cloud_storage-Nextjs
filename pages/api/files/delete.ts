@@ -15,7 +15,9 @@ async function handler(
   try {
     const fileRes = await FileService.deleteFileFromDb(data.fileId, userId);
     if (fileRes) {
-      FileService.deleteFileFromLocalDirectory("public/uploads/3.pdf");
+      FileService.deleteFileFromLocalDirectory(
+        `public/uploads/${data.filename}`
+      );
 
       res.status(200).json({ status: 1 });
       return;

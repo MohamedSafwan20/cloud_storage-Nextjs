@@ -71,7 +71,7 @@ const FileCard: NextPage<FileCardProps> = ({
   const deleteFile = async () => {
     const res = await fetch("/api/files/delete", {
       method: "DELETE",
-      body: JSON.stringify({ fileId: file._id }),
+      body: JSON.stringify({ fileId: file._id, filename: file.name }),
       headers: {
         Authorization: "Bearer " + Cookies.get("auth_token"),
       },
@@ -182,6 +182,7 @@ const FileCard: NextPage<FileCardProps> = ({
                 icon={<MdDelete color={customColors.error} size={20} />}
                 onClick={(e) => {
                   e.stopPropagation();
+                  deleteFile();
                 }}
               >
                 Permanently delete
