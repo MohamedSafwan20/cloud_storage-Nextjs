@@ -67,4 +67,13 @@ export default class FolderService {
 
     return user.filesAndFolders.filter((item: any) => item.type === "folder");
   }
+
+  public static async getFoldersAndFilesOfPath(
+    userId: string,
+    path: string
+  ): Promise<Array<IFileOrFolder>> {
+    const user = await User.findById(userId);
+
+    return user.filesAndFolders.filter((item: any) => item.path === path);
+  }
 }
