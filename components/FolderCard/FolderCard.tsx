@@ -73,7 +73,11 @@ const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
         props.className
       }
       onClick={() => {
-        router.push(`/folder/${props.folderName}`);
+        if (router.asPath === "/") {
+          router.push(`/folder/${props.folderName}`);
+        } else {
+          router.push(`${router.asPath}/${props.folderName}`);
+        }
       }}
     >
       <div className="flex justify-between w-full">
