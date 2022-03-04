@@ -57,7 +57,7 @@ const AllFiles: NextPage<Props> = (props) => {
   const toast = useToast();
 
   const files = JSON.parse(props.files) as Array<IFileOrFolder>;
-  const [fileName, setFileName] = useState("Upload Here");
+  const [fileName, setFileName] = useState("Uploaded file will show here");
   const [file, setFile] = useState<File>();
   const [fileError, setFileError] = useState("");
 

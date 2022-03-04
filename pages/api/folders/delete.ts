@@ -13,7 +13,11 @@ async function handler(
   const data = JSON.parse(req.body);
 
   try {
-    const folderRes = await FolderService.deleteFolder(data.folderName, userId);
+    const folderRes = await FolderService.deleteFolder(
+      data.folderName,
+      data.folderPath,
+      userId
+    );
 
     if (folderRes) {
       res.status(200).json({ status: 1 });

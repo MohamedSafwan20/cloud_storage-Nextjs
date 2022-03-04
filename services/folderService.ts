@@ -39,11 +39,12 @@ export default class FolderService {
 
   public static async deleteFolder(
     folderName: string,
+    folderPath: string,
     userId: string
   ): Promise<boolean> {
     const res = await User.findOneAndUpdate(
       { _id: userId },
-      { $pull: { filesAndFolders: { name: folderName } } },
+      { $pull: { filesAndFolders: { name: folderName, path: folderPath } } },
       { new: true }
     );
 
@@ -68,12 +69,25 @@ export default class FolderService {
     return user.filesAndFolders.filter((item: any) => item.type === "folder");
   }
 
+  public static async getFoldersOfPath(
+    userId: string,
+    path: string
+  ): Promise<Array<IFileOrFolder>> {
+    const user = await User.findById(userId);
+
+    return user.filesAndFolders.filter((item: any) => {
+      return item.path === path && item.type === "folder";
+    });
+  }
+
   public static async getFoldersAndFilesOfPath(
     userId: string,
     path: string
   ): Promise<Array<IFileOrFolder>> {
     const user = await User.findById(userId);
 
-    return user.filesAndFolders.filter((item: any) => item.path === path);
+    return user.filesAndFolders.filter((item: any) => {
+      return item.path === path;
+    });
   }
 }

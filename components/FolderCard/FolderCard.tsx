@@ -32,13 +32,18 @@ const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
   const toast = useToast();
 
   const deleteFolder = async () => {
+    const folderPath =
+      router.asPath === "/all-folders"
+        ? "/"
+        : "/" + router.asPath.replaceAll("%20", " ").substring(8);
+
     try {
       const res = await fetch("/api/folders/delete", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${Cookies.get("auth_token")}`,
         },
-        body: JSON.stringify({ folderName: props.folderName }),
+        body: JSON.stringify({ folderName: props.folderName, folderPath }),
       });
       const data = await res.json();
 
@@ -73,7 +78,7 @@ const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
         props.className
       }
       onClick={() => {
-        if (router.asPath === "/") {
+        if (router.asPath === "/" || router.asPath === "/all-folders") {
           router.push(`/folder/${props.folderName}`);
         } else {
           router.push(`${router.asPath}/${props.folderName}`);

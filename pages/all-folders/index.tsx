@@ -3,6 +3,10 @@ import {
   Button,
   IconButton,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -20,6 +24,7 @@ import { IoAddOutline } from "react-icons/io5";
 import FolderCard from "../../components/FolderCard/FolderCard";
 import Root from "../../components/Root";
 import customColors from "../../config/colors";
+import connectToDb from "../../config/db";
 import Routes from "../../config/routes";
 import IFileOrFolder from "../../models/IFileOrFolder";
 import AuthService from "../../services/authService";
@@ -31,21 +36,21 @@ type Props = {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const isAuthenticated = AuthService.isUserAuthenticated(
-    context.req.headers.cookie?.split("=")[1]
-  );
+  const authToken = context.req.headers.cookie?.split("=")[1];
 
-  const folders = await FolderService.getAllFolders(
-    context.req.headers.cookie?.split("=")[1]!!
-  );
+  const userId = AuthService.isUserAuthenticated(authToken);
 
-  if (!isAuthenticated)
+  if (!userId)
     return {
       redirect: {
         permanent: true,
         destination: Routes.Login,
       },
     };
+
+  await connectToDb();
+
+  const folders = await FolderService.getFoldersOfPath(userId as string, "/");
 
   return {
     props: { folders: JSON.stringify(folders) },

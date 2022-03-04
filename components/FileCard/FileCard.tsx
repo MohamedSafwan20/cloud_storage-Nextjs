@@ -61,7 +61,7 @@ const FileCard: NextPage<FileCardProps> = ({
       downloadFromPublicDirectory(file.name);
     } else {
       toast({
-        title: "Something went wrong",
+        title: data.message,
         status: "error",
         isClosable: true,
       });

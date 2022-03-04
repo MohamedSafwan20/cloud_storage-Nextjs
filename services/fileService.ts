@@ -1,9 +1,9 @@
+import fs from "fs";
 import path from "path";
 import connectToDb from "../config/db";
 import IFileOrFolder from "../models/IFileOrFolder";
 import User from "../models/User";
 import AuthService from "./authService";
-import fs from "fs";
 
 type FileReq = {
   name: string;
@@ -87,9 +87,9 @@ export default class FileService {
   public static async getFile(fileId: string, userId: string) {
     const user = await User.findById(userId);
 
-    const file = await user.filesAndFolders.find(
-      (item: any) => item.type === "file" && item._id === fileId
-    );
+    const file = await user.filesAndFolders.find((item: any) => {
+      return item.type === "file" && item._id.toString() === fileId;
+    });
 
     return file;
   }

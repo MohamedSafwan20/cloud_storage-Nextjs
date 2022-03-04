@@ -8,6 +8,7 @@ import Root from "../components/Root";
 import StorageProgressBar from "../components/StorageProgressBar/StorageProgressBar";
 import StorageUpgradeSection from "../components/StorageUpgradeSection/StorageUpgradeSection";
 import customColors from "../config/colors";
+import connectToDb from "../config/db";
 import Routes from "../config/routes";
 import IFileOrFolder from "../models/IFileOrFolder";
 import AuthService from "../services/authService";
@@ -22,18 +23,23 @@ type Props = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const authToken = context.req.headers.cookie?.split("=")[1]!!;
 
-  let isAuthenticated = AuthService.isUserAuthenticated(authToken);
+  let userId = AuthService.isUserAuthenticated(authToken);
 
-  const folders = await FolderService.getAllFolders(authToken);
-  const files = await FileService.getAllFiles(authToken);
-
-  if (!isAuthenticated)
+  if (!userId)
     return {
       redirect: {
         permanent: true,
         destination: Routes.Login,
       },
     };
+
+  await connectToDb();
+
+  const folders = await FolderService.getFoldersOfPath(
+    userId as string,
+    Routes.Home
+  );
+  const files = await FileService.getAllFiles(authToken);
 
   return {
     props: {
