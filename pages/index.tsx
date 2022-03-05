@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import type { GetServerSideProps, NextPage } from "next";
+import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import FilesSection from "../components/FilesSection/FilesSection";
 import FolderSection from "../components/FolderSection/FolderSection";
@@ -52,6 +53,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const HomePage: NextPage<Props> = (props) => {
   const folders = JSON.parse(props.folders) as Array<IFileOrFolder>;
   const files = JSON.parse(props.files) as Array<IFileOrFolder>;
+  const [allFilesSize, setAllFilesSize] = useState(0);
+
+  useEffect(() => {
+    files.forEach((file) => setAllFilesSize(allFilesSize + file.size));
+  }, []);
 
   return (
     <Root>
@@ -71,7 +77,7 @@ const HomePage: NextPage<Props> = (props) => {
           </div>
         </div>
         <div className="lg:w-[30%] sm:flex sm:justify-between lg:flex-col sm:items-center sm:w-[100%] text-center progress">
-          <StorageProgressBar />
+          <StorageProgressBar allFilesSize={allFilesSize} />
           <StorageUpgradeSection />
         </div>
         <style jsx>

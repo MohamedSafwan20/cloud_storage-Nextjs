@@ -22,7 +22,7 @@ const downloadFromPublicDirectory = (filename: string) => {
   a.remove();
 };
 
-const formatBytes = (bytes: number, precision = 2): string => {
+const formatBytes = (bytes: number, precision = 0): string => {
   if (bytes == 0) return "0 B";
 
   const base = 1024;
