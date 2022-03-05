@@ -3,5 +3,6 @@ export default interface IFileOrFolder {
   path: string;
   name: string;
   type: string;
+  size: number;
   createdAt: Date;
 }

@@ -9,6 +9,7 @@ type FileReq = {
   name: string;
   type: string;
   path: string;
+  size: number;
 };
 
 export default class FileService {
@@ -34,6 +35,7 @@ export default class FileService {
         path: data.path,
         type: data.type,
         name: data.name,
+        size: data.size,
       });
 
       user.save();

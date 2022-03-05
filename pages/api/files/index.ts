@@ -38,7 +38,12 @@ handler.post(async (req: any, res: NextApiResponse) => {
     await connectToDb();
 
     const fileRes = await FileService.addFile(
-      { name: req.file.originalname, type: "file", path: req.headers.path },
+      {
+        name: req.file.originalname,
+        type: "file",
+        path: req.headers.path,
+        size: req.file.size,
+      },
       userId as string
     );
 

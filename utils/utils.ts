@@ -22,9 +22,22 @@ const downloadFromPublicDirectory = (filename: string) => {
   a.remove();
 };
 
+const formatBytes = (bytes: number, precision = 2): string => {
+  if (bytes == 0) return "0 B";
+
+  const base = 1024;
+  const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(base));
+
+  return (
+    parseFloat((bytes / Math.pow(base, i)).toFixed(precision)) + " " + sizes[i]
+  );
+};
+
 export {
   generateJwt,
   refresh,
   getExtensionFromFilename,
   downloadFromPublicDirectory,
+  formatBytes,
 };
