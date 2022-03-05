@@ -171,7 +171,7 @@ const Folder: NextPage<Props> = (props) => {
         <div>
           <Breadcrumb spacing="6px" separator={<BiChevronRight size={20} />}>
             <BreadcrumbItem className="hover:underline">
-              <BreadcrumbLink as={Link} href="/">
+              <BreadcrumbLink as={Link} href="/all-folders">
                 Home
               </BreadcrumbLink>
             </BreadcrumbItem>

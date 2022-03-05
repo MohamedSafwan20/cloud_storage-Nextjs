@@ -48,7 +48,21 @@ export default class FolderService {
       { new: true }
     );
 
-    if (res._id) return true;
+    if (res._id) {
+      const path = folderPath + folderName;
+
+      const deleteRes = await User.updateMany(
+        { _id: userId },
+        {
+          $pull: {
+            filesAndFolders: { path: { $regex: "^" + path, $options: "i" } },
+          },
+        },
+        { new: true }
+      );
+
+      return true;
+    }
 
     return false;
   }
