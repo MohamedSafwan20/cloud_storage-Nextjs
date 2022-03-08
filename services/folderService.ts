@@ -29,6 +29,7 @@ export default class FolderService {
         path: data.path,
         type: data.type,
         name: data.name,
+        size: 0,
       });
 
       user.save();

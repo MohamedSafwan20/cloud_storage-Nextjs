@@ -61,9 +61,8 @@ const AllFolders: NextPage<Props> = (props) => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [folders, setFolders] = useState(
-    JSON.parse(props.folders) as Array<IFileOrFolder>
-  );
+  const folders = JSON.parse(props.folders) as Array<IFileOrFolder>;
+
   const [folderName, setFolderName] = useState("");
   const [folderNameError, setFolderNameError] = useState("");
 
@@ -117,6 +116,7 @@ const AllFolders: NextPage<Props> = (props) => {
               className="w-1/6"
               key={folder._id}
               folderName={folder.name}
+              folderId={folder._id}
             />
           ))}
         </div>

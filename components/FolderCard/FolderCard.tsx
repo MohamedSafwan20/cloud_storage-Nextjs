@@ -25,11 +25,45 @@ interface FolderCardProps {
   isFavorite?: boolean;
   isDeleted?: boolean;
   folderName: string;
+  folderId: string;
 }
 
 const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
   const router = useRouter();
   const toast = useToast();
+
+  const addToFavorites = async () => {
+    try {
+      const res = await fetch("/api/folders/favorites/add", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+        body: JSON.stringify({ id: props.folderId }),
+      });
+      const data = await res.json();
+
+      if (data.status) {
+        toast({
+          title: "Added to favorites",
+          status: "success",
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: data.message,
+          status: "error",
+          isClosable: true,
+        });
+      }
+    } catch (_err) {
+      toast({
+        title: "Network Error",
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
 
   const deleteFolder = async () => {
     const folderPath =

@@ -24,6 +24,15 @@ const filesAndFoldersSchema = new mongoose.Schema(
   }
 );
 
+const favoritesScheme = new mongoose.Schema(
+  {
+    data_id: mongoose.ObjectId,
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -36,6 +45,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   filesAndFolders: [filesAndFoldersSchema],
+  favorites: [favoritesScheme],
 });
 
 const User = mongoose.models?.User || mongoose.model("User", userSchema);
