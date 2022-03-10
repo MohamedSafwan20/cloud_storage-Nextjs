@@ -2,14 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, Add the below env object to nextConfig in next.config.js:
+First, create .env.local file and add the following code:
 
 ```bash
-env: {
-    MONGO_URI: <YOUR_MONGO_DB_URI>,
-    JWT_SECRET: <SOME_STRONG_SECRET_KEY>,
-    UPLOAD_PATH: <THE_PATH_TO_STORE_THE_UPLOADED_FILES>,
-  }
+    MONGO_URI = <YOUR_MONGO_DB_URI>
+    JWT_SECRET = <SOME_STRONG_SECRET_KEY>
+    UPLOAD_PATH = <THE_PATH_TO_STORE_THE_UPLOADED_FILES>
 ```
 
 Install dependencies:
