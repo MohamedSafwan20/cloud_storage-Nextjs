@@ -43,15 +43,23 @@ const Favorites: NextPage<Props> = (props) => {
       <div className="py-16 px-14">
         <h1 className="h3">Favorites</h1>
         <div className="mt-4 flex items-center flex-wrap">
-          {favorites.map((item) => (
-            <FolderCard
-              isFavorite
-              key={item._id}
-              folderId={item._id}
-              folderName={item.name}
-              className="w-1/6 h-[120px]"
-            />
-          ))}
+          {favorites.length > 0 ? (
+            favorites.map((item) => (
+              <FolderCard
+                isFavorite
+                key={item._id}
+                folderId={item._id}
+                folderName={item.name}
+                className="w-1/6 h-[120px]"
+              />
+            ))
+          ) : (
+            <div className="flex justify-center items-center w-[100%] h-[20vh]">
+              <h2 className="font-bold text-2xl text-disabledVariant">
+                No Favorites!
+              </h2>
+            </div>
+          )}
         </div>
       </div>
     </Root>
