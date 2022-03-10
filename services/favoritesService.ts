@@ -48,4 +48,22 @@ export default class FavoritesService {
       favoritesIds.includes(folder._id)
     );
   }
+
+  public static async deleteFromFavorites({
+    dataId,
+    userId,
+  }: {
+    dataId: string;
+    userId: string;
+  }): Promise<boolean> {
+    const res = await User.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { favorites: { data_id: dataId } } },
+      { new: true }
+    );
+
+    if (res._id) return true;
+
+    return false;
+  }
 }
