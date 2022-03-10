@@ -18,6 +18,7 @@ import {
   MdSettingsBackupRestore,
 } from "react-icons/md";
 import customColors from "../../config/colors";
+import Routes from "../../config/routes";
 import { refresh } from "../../utils/utils";
 
 interface FolderCardProps {
@@ -115,7 +116,11 @@ const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
         props.className
       }
       onClick={() => {
-        if (router.asPath === "/" || router.asPath === "/all-folders") {
+        if (
+          router.asPath === Routes.Home ||
+          router.asPath === Routes.allFolders ||
+          router.asPath === Routes.favorites
+        ) {
           router.push(`/folder/${props.folderName}`);
         } else {
           router.push(`${router.asPath}/${props.folderName}`);

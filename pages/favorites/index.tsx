@@ -4,22 +4,21 @@ import FileCard from "../../components/FileCard/FileCard";
 import FolderCard from "../../components/FolderCard/FolderCard";
 import Root from "../../components/Root";
 import Routes from "../../config/routes";
+import IFavorite from "../../models/IFavorite";
 import IFileOrFolder from "../../models/IFileOrFolder";
 import AuthService from "../../services/authService";
-import FileService from "../../services/fileService";
+import FavoritesService from "../../services/favoritesService";
 
 type Props = {
-  files: string;
+  favorites: string;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const authToken = context.req.headers.cookie?.split("=")[1];
 
-  let isAuthenticated = AuthService.isUserAuthenticated(authToken);
+  let userId = AuthService.isUserAuthenticated(authToken);
 
-  const files = await FileService.getAllFiles(authToken!!);
-
-  if (!isAuthenticated)
+  if (!userId)
     return {
       redirect: {
         permanent: true,
@@ -27,24 +26,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
 
+  const favorites = await FavoritesService.getAllFavoriteFolders({
+    userId: userId as string,
+  });
+
   return {
-    props: { files: JSON.stringify(files) },
+    props: { favorites: JSON.stringify(favorites) },
   };
 };
 
 const Favorites: NextPage<Props> = (props) => {
-  const files = JSON.parse(props.files) as Array<IFileOrFolder>;
+  const favorites = JSON.parse(props.favorites) as Array<IFileOrFolder>;
 
   return (
     <Root>
       <div className="py-16 px-14">
         <h1 className="h3">Favorites</h1>
         <div className="mt-4 flex items-center flex-wrap">
-          {files.map((file) => (
-            <FileCard
+          {favorites.map((item) => (
+            <FolderCard
               isFavorite
-              key={file._id}
-              file={file}
+              key={item._id}
+              folderId={item._id}
+              folderName={item.name}
               className="w-1/6 h-[120px]"
             />
           ))}

@@ -1,4 +1,5 @@
 import IFavorite from "../models/IFavorite";
+import IFileOrFolder from "../models/IFileOrFolder";
 import User from "../models/User";
 
 export default class FavoritesService {
@@ -30,5 +31,21 @@ export default class FavoritesService {
     const user = await User.findById(userId);
 
     return user.favorites;
+  }
+
+  public static async getAllFavoriteFolders({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Array<IFavorite>> {
+    const user = await User.findById(userId);
+
+    const favoritesIds = user.favorites.map(
+      (favorite: IFavorite) => favorite.data_id
+    );
+
+    return user.filesAndFolders.filter((folder: IFileOrFolder) =>
+      favoritesIds.includes(folder._id)
+    );
   }
 }
