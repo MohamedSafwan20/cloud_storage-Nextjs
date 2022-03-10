@@ -37,11 +37,13 @@ import connectToDb from "../../config/db";
 import Routes from "../../config/routes";
 import IFileOrFolder from "../../models/IFileOrFolder";
 import AuthService from "../../services/authService";
+import FavoritesService from "../../services/favoritesService";
 import FolderService from "../../services/folderService";
 import { refresh } from "../../utils/utils";
 
 type Props = {
   data: string;
+  favorites: string;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -66,8 +68,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     path
   );
 
+  const favorites = await FavoritesService.getAllFavorites(userId as string);
+  const favoritesId = favorites.map((item) => item.data_id);
+
   return {
-    props: { data: JSON.stringify(data) },
+    props: {
+      data: JSON.stringify(data),
+      favorites: JSON.stringify(favoritesId),
+    },
   };
 };
 
@@ -80,6 +88,7 @@ const Folder: NextPage<Props> = (props) => {
   const [queryArray, setQueryArray] = useState<string[]>([]);
 
   const foldersAndFiles = JSON.parse(props.data) as Array<IFileOrFolder>;
+  const favorites = JSON.parse(props.favorites) as Array<string>;
 
   const [folderName, setFolderName] = useState("");
   const [folderNameError, setFolderNameError] = useState("");
@@ -257,8 +266,10 @@ const Folder: NextPage<Props> = (props) => {
               return (
                 <FolderCard
                   key={item._id}
+                  folderId={item._id}
                   className="w-1/6 mb-10"
                   folderName={item.name}
+                  alreadyInFavorite={favorites.includes(item._id)}
                 />
               );
             })}

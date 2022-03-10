@@ -1,3 +1,4 @@
+import IFavorite from "./IFavorite";
 import IFileOrFolder from "./IFileOrFolder";
 
 export default interface IUser {
@@ -5,4 +6,5 @@ export default interface IUser {
   email: string;
   password: string;
   filesAndFolders: [IFileOrFolder];
+  favorites: [IFavorite];
 }

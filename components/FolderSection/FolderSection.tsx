@@ -3,11 +3,13 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import folderNotFoundImg from "../../assets/images/folder-not-found.png";
+import IFavorite from "../../models/IFavorite";
 import IFileOrFolder from "../../models/IFileOrFolder";
 import FolderCard from "../FolderCard/FolderCard";
 
 type Props = {
   folders: Array<IFileOrFolder>;
+  favorites: Array<string>;
 };
 
 const FolderSection: NextPage<Props> = (props) => {
@@ -15,6 +17,8 @@ const FolderSection: NextPage<Props> = (props) => {
 
   const folders = props.folders;
   folders.length > 6 ? (folders.length = 6) : null;
+
+  const favorites = props.favorites;
 
   return (
     <div className="mt-12 mb-8">
@@ -33,8 +37,10 @@ const FolderSection: NextPage<Props> = (props) => {
           folders.map((item) => (
             <FolderCard
               key={item._id}
+              folderId={item._id}
               className="md:w-1/4 w-1/3"
               folderName={item.name}
+              alreadyInFavorite={favorites.includes(item._id)}
             />
           ))
         ) : (

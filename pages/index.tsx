@@ -13,12 +13,14 @@ import connectToDb from "../config/db";
 import Routes from "../config/routes";
 import IFileOrFolder from "../models/IFileOrFolder";
 import AuthService from "../services/authService";
+import FavoritesService from "../services/favoritesService";
 import FileService from "../services/fileService";
 import FolderService from "../services/folderService";
 
 type Props = {
   folders: string;
   files: string;
+  favorites: string;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -40,12 +42,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     userId as string,
     Routes.Home
   );
-  const files = await FileService.getAllFiles(authToken);
+  const files = await FileService.getAllFiles(userId as string);
+  const favorites = await FavoritesService.getAllFavorites(userId as string);
+  const favoritesId = favorites.map((item) => item.data_id);
 
   return {
     props: {
       folders: JSON.stringify(folders),
       files: JSON.stringify(files),
+      favorites: JSON.stringify(favoritesId),
     },
   };
 };
@@ -53,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const HomePage: NextPage<Props> = (props) => {
   const folders = JSON.parse(props.folders) as Array<IFileOrFolder>;
   const files = JSON.parse(props.files) as Array<IFileOrFolder>;
+  const favorites = JSON.parse(props.favorites) as Array<string>;
   const [allFilesSize, setAllFilesSize] = useState(0);
 
   useEffect(() => {
@@ -72,7 +78,7 @@ const HomePage: NextPage<Props> = (props) => {
                 <Input placeholder="Search Files" border="none" />
               </InputGroup>
             </div>
-            <FolderSection folders={folders} />
+            <FolderSection folders={folders} favorites={favorites} />
             <FilesSection filesData={files} />
           </div>
         </div>

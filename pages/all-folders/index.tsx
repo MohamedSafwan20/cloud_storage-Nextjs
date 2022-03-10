@@ -28,11 +28,13 @@ import connectToDb from "../../config/db";
 import Routes from "../../config/routes";
 import IFileOrFolder from "../../models/IFileOrFolder";
 import AuthService from "../../services/authService";
+import FavoritesService from "../../services/favoritesService";
 import FolderService from "../../services/folderService";
 import { refresh } from "../../utils/utils";
 
 type Props = {
   folders: string;
+  favorites: string;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -51,9 +53,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await connectToDb();
 
   const folders = await FolderService.getFoldersOfPath(userId as string, "/");
+  const favorites = await FavoritesService.getAllFavorites(userId as string);
+  const favoritesId = favorites.map((item) => item.data_id);
 
   return {
-    props: { folders: JSON.stringify(folders) },
+    props: {
+      folders: JSON.stringify(folders),
+      favorites: JSON.stringify(favoritesId),
+    },
   };
 };
 
@@ -62,6 +69,7 @@ const AllFolders: NextPage<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const folders = JSON.parse(props.folders) as Array<IFileOrFolder>;
+  const favorites = JSON.parse(props.favorites) as Array<string>;
 
   const [folderName, setFolderName] = useState("");
   const [folderNameError, setFolderNameError] = useState("");
@@ -111,12 +119,13 @@ const AllFolders: NextPage<Props> = (props) => {
               <IoAddOutline size={35} color={customColors.primary} />
             </IconButton>
           </div>
-          {folders.map((folder: IFileOrFolder) => (
+          {folders.map((item) => (
             <FolderCard
+              key={item._id}
+              folderId={item._id}
               className="w-1/6"
-              key={folder._id}
-              folderName={folder.name}
-              folderId={folder._id}
+              folderName={item.name}
+              alreadyInFavorite={favorites.includes(item._id)}
             />
           ))}
         </div>

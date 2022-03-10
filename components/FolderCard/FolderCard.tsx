@@ -23,6 +23,7 @@ import { refresh } from "../../utils/utils";
 interface FolderCardProps {
   className?: string;
   isFavorite?: boolean;
+  alreadyInFavorite?: boolean;
   isDeleted?: boolean;
   folderName: string;
   folderId: string;
@@ -34,7 +35,7 @@ const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
 
   const addToFavorites = async () => {
     try {
-      const res = await fetch("/api/folders/favorites/add", {
+      const res = await fetch("/api/favorites/add", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${Cookies.get("auth_token")}`,
@@ -44,6 +45,8 @@ const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
       const data = await res.json();
 
       if (data.status) {
+        refresh();
+
         toast({
           title: "Added to favorites",
           status: "success",
@@ -209,14 +212,16 @@ const FolderCard: NextPage<FolderCardProps> = (props: FolderCardProps) => {
             />
             <MenuList>
               <MenuItem
+                isDisabled={props.alreadyInFavorite}
                 icon={
                   <MdOutlineFavorite color={customColors.warning} size={20} />
                 }
                 onClick={(e) => {
                   e.stopPropagation();
+                  addToFavorites();
                 }}
               >
-                Add to favorites
+                {props.alreadyInFavorite ? "Favorite!" : "Add to favorites"}
               </MenuItem>
               <MenuItem
                 icon={<MdDelete color={customColors.error} size={20} />}

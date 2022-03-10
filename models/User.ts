@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const filesAndFoldersSchema = new mongoose.Schema(
   {
@@ -26,7 +26,7 @@ const filesAndFoldersSchema = new mongoose.Schema(
 
 const favoritesScheme = new mongoose.Schema(
   {
-    data_id: mongoose.ObjectId,
+    data_id: Types.ObjectId,
   },
   {
     timestamps: true,

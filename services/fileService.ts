@@ -71,16 +71,8 @@ export default class FileService {
   }
 
   public static async getAllFiles(
-    token: string
+    userId: string
   ): Promise<Array<IFileOrFolder>> {
-    const userId = AuthService.isUserAuthenticated(token);
-
-    if (userId === false) {
-      return [];
-    }
-
-    await connectToDb();
-
     const user = await User.findById(userId);
 
     return user.filesAndFolders.filter((item: any) => item.type === "file");
