@@ -45,10 +45,10 @@ const FilesSection: NextPage<Props> = (props) => {
   const files = props.filesData;
   files.length > 6 ? (files.length = 6) : null;
 
-  const downloadFile = async (filename: string) => {
+  const downloadFile = async (fileId: string) => {
     const res = await fetch("/api/files/download", {
       method: "POST",
-      body: JSON.stringify({ filename }),
+      body: JSON.stringify({ fileId }),
       headers: {
         Authorization: "Bearer " + Cookies.get("auth_token"),
       },
@@ -56,7 +56,7 @@ const FilesSection: NextPage<Props> = (props) => {
     const data = await res.json();
 
     if (data.status) {
-      downloadFromPublicDirectory(filename);
+      downloadFromPublicDirectory(data.filename);
     } else {
       toast({
         title: "Something went wrong",
@@ -148,7 +148,7 @@ const FilesSection: NextPage<Props> = (props) => {
                       )}
                       <p
                         className="ml-4 text-md font-semibold w-[150px] hover:cursor-pointer hover:text-primary"
-                        onClick={() => downloadFile(file.name)}
+                        onClick={() => downloadFile(file._id)}
                       >
                         {file.name}
                       </p>

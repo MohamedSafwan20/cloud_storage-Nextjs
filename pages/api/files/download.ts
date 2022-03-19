@@ -16,7 +16,7 @@ async function handler(
     const fileRes = await FileService.getFile(data.fileId, userId);
 
     if (fileRes !== undefined) {
-      res.status(200).json({ status: 1 });
+      res.status(200).json({ status: 1, filename: fileRes.name });
       return;
     } else {
       res.status(200).json({
