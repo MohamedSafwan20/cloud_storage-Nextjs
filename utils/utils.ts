@@ -16,7 +16,10 @@ const getExtensionFromFilename = (filename: string) =>
 
 const downloadFromPublicDirectory = (filename: string) => {
   const a = document.createElement("a");
-  a.href = `/uploads/${filename}`;
+  a.href =
+    process.env.NODE_ENV === "development"
+      ? `/uploads/${filename}`
+      : `${process.env.NEXT_PUBLIC_UPLOAD_PATH}/${filename}`;
   a.download = filename;
   a.click();
   a.remove();
