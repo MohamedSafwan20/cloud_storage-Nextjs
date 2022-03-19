@@ -34,17 +34,17 @@ type Props = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const authToken = context.req.headers.cookie?.split("=")[1];
 
-  let isAuthenticated = AuthService.isUserAuthenticated(authToken);
+  let userId = AuthService.isUserAuthenticated(authToken);
 
-  const files = await FileService.getAllFiles(authToken!!);
-
-  if (!isAuthenticated)
+  if (!userId)
     return {
       redirect: {
         permanent: true,
         destination: Routes.Login,
       },
     };
+
+  const files = await FileService.getAllFiles(userId as string);
 
   return {
     props: { files: JSON.stringify(files) },
