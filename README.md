@@ -25,3 +25,6 @@ yarn dev
 ```
 
 Open [http://localhost:2233](http://localhost:2233) with your browser to see the result.
+
+Deployed on Vercel:
+    https://cloud-storage-nextjs.vercel.app/
